@@ -1,0 +1,80 @@
+user:
+
+CREATE TABLE `nodedb`.`user` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `username` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NULL,
+  `phone` VARCHAR(20) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
+  UNIQUE INDEX `phone_UNIQUE` (`phone` ASC) VISIBLE);
+
+
+password:
+
+CREATE TABLE `nodedb`.`password` (
+  `userId` INT NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`userId`, `password`),
+  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE,
+  UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE);
+
+
+comment:
+
+CREATE TABLE `nodedb`.`comment` (
+  `id` INT NOT NULL,
+  `postId` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `body` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+
+photo:
+
+CREATE TABLE `nodedb`.`photo` (
+  `id` INT NOT NULL,
+  `albumId` INT NOT NULL,
+  `title` VARCHAR(45) NULL,
+  `url` VARCHAR(45) NOT NULL,
+  `thumbnailUrl` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+
+
+post:
+
+CREATE TABLE `nodedb`.`post` (
+  `id` INT NOT NULL,
+  `userId` INT NOT NULL,
+  `postcol` VARCHAR(45) NULL,
+  `title` VARCHAR(45) NULL,
+  `body` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+
+todo:
+
+CREATE TABLE `nodedb`.`todo` (
+  `id` INT NOT NULL,
+  `userId` INT NOT NULL,
+  `title` VARCHAR(45) NULL,
+  `completed` VARCHAR(45) BINARY NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+
+album:
+
+CREATE TABLE `nodedb`.`album` (
+  `id` INT NOT NULL,
+  `userId` INT NOT NULL,
+  `title` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
