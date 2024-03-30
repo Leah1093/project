@@ -1,14 +1,14 @@
 import express, { query } from "express";
 import 'dotenv/config';
-
-
-// import { productsRouter } from './router/productsRouter.js'
+ import { userRouter } from './router/usersRouter.js'
 const app = express();
 
 
-// app.use('/products',productsRouter)
+ app.use('/user',userRouter)
 
 
-app.listen(process.env.PORT, () => {
+app.listen(8081, () => {
     console.log("start server port: 8080");
 })
+
+
