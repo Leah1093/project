@@ -7,7 +7,7 @@ async function query(query, params){
     console.log("in query");
     const connection = await mysql.createConnection({
         host: 'localhost',
-        product: 'root',
+        user: 'root',
         database: process.env.DB_NAME,
         password: process.env.PASSWORD
 
