@@ -1,41 +1,80 @@
-import { getAllUsers, getUsertByid } from '../service/usersService.js';
+import { UserService } from '../service/usersService.js';
 export default class UsersController {
 
 
     async getUsers(req, res, next) {
         try {
-
-            const data = await getAllUsers();
-            return res.json(data);
-            //service
+            const userService = new UserService();
+            const resultItems = await userService.getAllUsers()
+            return res.status(200).json(resultItems);
         }
-        catch (err) {
-           // return res.statusCode(404).end("err")
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
         }
 
     }
+
     async getUserById(req, res, next) {
         try {
-            const data = await getUsertByid(req.params.id);
-            return res.json(data);
-            //service
+            console.log()
+            const userService = new UserService();
+            const resultItem = await userService.getUsertByid(req.params.id);
+            return res.status(200).json({ status: 200, data: resultItem });
         }
-        catch (err) {
-            console.log("err")
-            // return res.statusCode(404).end("err")
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
         }
 
     }
 
-    // addUser(req, res, next) {
-    //     try {
-    //         console.log("post user")
-    //         console.log(req.body)
+    async addUser(req, res) {
+        try {
+            const userService = new UserService();
+            console.log(req.body)
+            await userService.postUser(req.body);
 
-    //     }
-    //     catch (err) {
-    //         return res.statusCode(404).end("err")
-    //     }
+            return res.status(200).json({ status: 200 });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err);
+        }
+    }
 
-    // }
+    async deleteUserById(req, res) {
+        try {
+            const userService = new UserService();
+            await userService.deleteUser(req.params.id);
+            return res.status(200).json({ status: 200, data: req.params.id });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
+
+    async updateUserById(req, res) {
+        try {
+            const userService = new UserService();
+
+            await userService.updateUser(req.body);
+            return res.status(200).json({ status: 200, data: req.params.id });
+        }
+        catch (ex) {
+            const err = {}
+            err.statusCode = 500;
+            err.message = ex;
+            next(err)
+        }
+    }
 }

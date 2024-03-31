@@ -1,13 +1,16 @@
 import express from "express";
 import usersController from '../controllers/usersController.js'
 const userRouter = express.Router();
-console.log("123")
-const user = new usersController();
 
-userRouter.get("/:id",user.getUserById)
+const userController = new usersController();
 
-userRouter.get("/",user.getUsers);
-console.log("123554")
+userRouter.get("/:id",userController.getUserById)
+userRouter.get("/",userController.getUsers);
+userRouter.post("/",userController.addUser);
+userRouter.delete("/:id",userController.deleteUserById);
+userRouter.put("/:id",userController.updateUserById);
+
+
 export {
     userRouter
 }
