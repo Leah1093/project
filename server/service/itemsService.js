@@ -1,8 +1,17 @@
 import 'dotenv/config'
 import { query } from './db.js'
 import { getAllItemsQuery, getItemtByidQuery, postItemQuery, deleteItemQuery, updateItemQuery } from './queryItem.js'
-const tableName = 'user';
+let tableName;
 export class ItemService {
+    constructor(name) {
+        tableName = name;
+    }
+
+    // async getAoutoId(){
+    //     const queryItem = getAoutoIdQuery(tableName);
+    //     const result = await query(queryItem);
+    //     return result;
+    // }
 
     async getAllItems() {
         const queryItem = getAllItemsQuery(tableName);
@@ -17,7 +26,10 @@ export class ItemService {
     }
 
     async postItem(body) {
-        const queryItem = postItemQuery(tableName, "?,".repeat(Object.keys(body).length-1) + "?");
+        console.log("🎈🎈" + Object.keys(body));
+        let queryItem;
+        tableName == "user" ? queryItem = postItemQuery(tableName, "?,".repeat(Object.keys(body).length - 1) + "?")
+            : queryItem = postItemQuery(tableName, "NULL," + "?,".repeat(Object.keys(body).length - 1) + "?");
         const result = await query(queryItem, Object.values(body))
         return result;
     }

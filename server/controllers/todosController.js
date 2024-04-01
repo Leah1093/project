@@ -1,11 +1,10 @@
 import { ItemService } from '../service/itemsService.js';
-export default class UsersController {
+export default class TodosController {
 
-
-    async getUsers(req, res, next) {
+    async getTodos(req, res, next) {
         try {
-            const userService = new ItemService();
-            const resultItems = await userService.getAllItems()
+            const todoService = new ItemService("todo");
+            const resultItems = await todoService.getAllItems()
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -14,13 +13,12 @@ export default class UsersController {
             err.message = ex;
             next(err)
         }
-
     }
 
-    async getUserById(req, res, next) {
+    async getTodoById(req, res, next) {
         try {
-              const userService = new ItemService();
-            const resultItem = await userService.getItemByid(req.params.id);
+              const todoService = new ItemService("todo");
+            const resultItem = await todoService.getItemByid(req.params.id);
             return res.status(200).json({ status: 200, data: resultItem });
         }
         catch (ex) {
@@ -32,11 +30,11 @@ export default class UsersController {
 
     }
 
-    async addUser(req, res) {
+    async addTodo(req, res) {
         try {
-            const userService = new ItemService();
+            const todoService = new ItemService("todo");
             console.log(req.body)
-            await userService.postItem(req.body);
+            await todoService.postItem(req.body);
 
             return res.status(200).json({ status: 200 });
         }
@@ -48,10 +46,10 @@ export default class UsersController {
         }
     }
 
-    async deleteUserById(req, res) {
+    async deleteTodoById(req, res) {
         try {
-            const userService = new ItemService();
-            await userService.deleteItem(req.params.id);
+            const todoService = new ItemService("todo");
+            await todoService.deleteItem(req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
@@ -62,11 +60,10 @@ export default class UsersController {
         }
     }
 
-    async updateUserById(req, res) {
+    async updateTodoById(req, res) {
         try {
-            const userService = new ItemService();
-
-            await userService.updateItem(req.body,req.params.id);
+            const todoService = new ItemService("todo");
+            await todoService.updateItem(req.body,req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

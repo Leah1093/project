@@ -170,3 +170,54 @@ CREATE TABLE `nodedb`.`todo` (
 password:
 
 Leah@Ruth1
+
+
+
+
+create database DB;
+
+
+create table user(
+	id int AUTO_INCREMENT,
+    name varchar(255),
+    username varchar(255) not null unique,
+    email varchar(255) not null,
+    phone varchar(20),
+    primary key(id)
+);
+
+create table userPassword(
+	id int AUTO_INCREMENT,
+    password varchar(30) not null,
+	primary key(id),
+    foreign key (id) references user(id)
+);
+
+create table todo(
+	id int AUTO_INCREMENT,
+    userId int not null,
+    title varchar(255),
+    completed bool,
+    primary key(id),
+    foreign key (userId) references user(id)
+ );
+
+CREATE TABLE post (
+    id INT AUTO_INCREMENT,
+    userId INT NOT NULL,
+    title VARCHAR(255),
+    body VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId)
+        REFERENCES user (id)
+);
+
+create table comment(
+	id int AUTO_INCREMENT,
+    postId int not null,
+    name varchar(255),
+    email varchar(255),
+    body varchar(255),
+	primary key(id),
+    foreign key (postId) references post(id)
+);
