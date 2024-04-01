@@ -1,0 +1,17 @@
+.inactive {
+  color: rgb(42, 41, 41);
+  font-weight: bold;
+  
+  }
+  
+  .active {
+
+    color: red;
+    text-decoration: underline red;
+    font-weight:bolder;
+    
+  }
+.inactive:hover{color: red;
+}
+.active:hover{color: red;
+}
