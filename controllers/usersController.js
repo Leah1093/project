@@ -1,11 +1,11 @@
-import { UserService } from '../service/usersService.js';
+import { ItemService } from '../service/itemsService.js';
 export default class UsersController {
 
 
     async getUsers(req, res, next) {
         try {
-            const userService = new UserService();
-            const resultItems = await userService.getAllUsers()
+            const userService = new ItemService();
+            const resultItems = await userService.getAllItems()
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -19,9 +19,8 @@ export default class UsersController {
 
     async getUserById(req, res, next) {
         try {
-            console.log()
-            const userService = new UserService();
-            const resultItem = await userService.getUsertByid(req.params.id);
+              const userService = new ItemService();
+            const resultItem = await userService.getItemByid(req.params.id);
             return res.status(200).json({ status: 200, data: resultItem });
         }
         catch (ex) {
@@ -35,9 +34,9 @@ export default class UsersController {
 
     async addUser(req, res) {
         try {
-            const userService = new UserService();
+            const userService = new ItemService();
             console.log(req.body)
-            await userService.postUser(req.body);
+            await userService.postItem(req.body);
 
             return res.status(200).json({ status: 200 });
         }
@@ -51,8 +50,8 @@ export default class UsersController {
 
     async deleteUserById(req, res) {
         try {
-            const userService = new UserService();
-            await userService.deleteUser(req.params.id);
+            const userService = new ItemService();
+            await userService.deleteItem(req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
@@ -65,9 +64,9 @@ export default class UsersController {
 
     async updateUserById(req, res) {
         try {
-            const userService = new UserService();
+            const userService = new ItemService();
 
-            await userService.updateUser(req.body);
+            await userService.updateItem(req.body,req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
