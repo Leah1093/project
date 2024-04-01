@@ -22,26 +22,16 @@ const Login = () => {
             name: data.name,
             username: data.username,
             email: data.email,
-            street: data.address.street,
-            suite: data.address.suite,
-            city: data.address.city,
-            zipcode: data.address.zipcode,
-            lat: data.address.geo.lat,
-            lng: data.address.geo.lng,
-            phone: data.phone,
-            website: data.website,
-            companyName: data.company.name,
-            catchPhrase: data.company.catchPhrase,
-            bs: data.company.bs})
+            phone: data.phone})
         localStorage.setItem('currentUser', JSON.stringify({ username: data.username, id: data.id }));
-        navigate(`/home/users/${data.id}`)
+        navigate(`/home/user/${data.id}`)
     }
 
     const isExist = (name, password) => {
-        fetch(`http://localhost:3000/users?username=${name}&&website=${password}`)
+        fetch(`http://localhost:8086/user?username=${name}&&password=${password}`)
             .then(async response => {
                 const data = await response.json();
-                (data===[]) ? setExist(false) : goToHome(data[0])
+                (data==[]) ? setExist(false) : goToHome(data[0])
             })
     }
 
@@ -52,8 +42,6 @@ const Login = () => {
         }
         isExist(data.username, data.password)
     }
-
-
 
     return (
         <>
