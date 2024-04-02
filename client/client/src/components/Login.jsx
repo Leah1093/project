@@ -28,11 +28,20 @@ const Login = () => {
     }
 
     const isExist = (name, password) => {
-        fetch(`http://localhost:8086/user?username=${name}&&password=${password}`)
-            .then(async response => {
-                const data = await response.json();
-                (data==[]) ? setExist(false) : goToHome(data[0])
+
+        fetch(`http://localhost:8086/entrance/login?username=${name}&&password=${password}`, {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        })
+            .then(response => {
+                (!response.ok) ? alert("oops somthing went wrong... please try again!") 
+                : (fetch(`http://localhost:8086/user?username=${name}`)
+                .then(async response => {
+                    const data = await response.json();
+                    (data==[]) ? setExist(false) : goToHome(data[0])
+                }))
             })
+
     }
 
     const logIn = (data) => {

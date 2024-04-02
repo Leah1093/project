@@ -8,7 +8,7 @@ const UserDetailes = ({ username, password }) => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
     let id;
     useEffect(() => {
-        fetch(`http://localhost:3000/nextIds/users`)
+        fetch(`http://localhost:8086/nextIds/users`)
             .then(async response => {
                 const data = await response.json();
                 if (response.ok) {

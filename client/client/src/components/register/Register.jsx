@@ -15,7 +15,7 @@ const Register = () => {
     } = useForm();
 
     const isExist = (name) => {
-        fetch(`http://localhost:3000/users?username=${name}`)
+        fetch(`http://localhost:8086/users?username=${name}`)
             .then(response => response.json())
             .then(response => (response.length) ? setExist("exist") : setExist("notExist"))
     }

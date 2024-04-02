@@ -31,14 +31,14 @@ const SearchTodos = ({ setTodos, allTodos }) => {
                     values[1] = { ...values[1], value: element.target[i].value }
                     break;
                 case "completed":
-                    values[2] = { ...values[2], value: (element.target[i].value === "true" ? true : false) }
+                    values[2] = { ...values[2], value: (element.target[i].value === "true" ? 1 : 0) }
                     break;
             }
         }
         element.target.reset()
         let tempSelectedTodos = [];
         allTodos.forEach((todo) => {
-            if (((values[0].value != "") ? todo.id === values[0].value : true)
+            if (((values[0].value != "") ? todo.id.toString()=== values[0].value : true)
                 && ((values[1].value != "") ? todo.title === values[1].value : true)
                 && ((values[2].value != null) ? todo.completed === values[2].value : true)
             ) {

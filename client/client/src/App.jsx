@@ -8,9 +8,8 @@ import Posts from './components/posts/Posts';
 import Todos from './components/todos/Todos';
 import Comments from './components/posts/comments/Comments';
 import Layout from './components/Layout';
-import Error from './components/error';
+import Error from "./components/Error";
 import Info from './components/info/Info';
-
 export const UserContext = createContext();
 
 function App() {
@@ -27,10 +26,10 @@ function App() {
 
   useEffect(() => {
     const currntUser = JSON.parse(localStorage.getItem("currentUser"))
-    currntUser && fetch(`http://localhost:8086/users/${currntUser.id}`)
+    currntUser && fetch(`http://localhost:8086/user/${currntUser.id}`)
       .then(async response => {
         const data = await response.json();
-        response.ok && setCurrentUser(() => user(data))
+        response.ok && setCurrentUser(() => user(data[0]))
       })
   }, []);
 

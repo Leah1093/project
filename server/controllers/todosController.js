@@ -4,7 +4,7 @@ export default class TodosController {
     async getTodos(req, res, next) {
         try {
             const todoService = new ItemService("todo");
-            const resultItems = await todoService.getAllItems()
+            const resultItems = await todoService.getItems(req)
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -15,27 +15,10 @@ export default class TodosController {
         }
     }
 
-    async getTodoById(req, res, next) {
-        try {
-              const todoService = new ItemService("todo");
-            const resultItem = await todoService.getItemByid(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItem });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-
-    }
-
     async addTodo(req, res) {
         try {
             const todoService = new ItemService("todo");
-            console.log(req.body)
             await todoService.postItem(req.body);
-
             return res.status(200).json({ status: 200 });
         }
         catch (ex) {
@@ -63,6 +46,8 @@ export default class TodosController {
     async updateTodoById(req, res) {
         try {
             const todoService = new ItemService("todo");
+            console.log("🥽🕶👓"+req.body)
+            console.log("🥽🕶👓"+req.params.id)
             await todoService.updateItem(req.body,req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }

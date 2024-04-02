@@ -14,7 +14,7 @@ const[isUpdate,setIsUpdate]=useState(-1)
 
     const getComments = () => {
         debugger
-        fetch(`http://localhost:3000/comments?postId=${postId}`)
+        fetch(`http://localhost:8086/comment?postId=${postId}`)
         .then(async response => {
             const data = await response.json();
             response.ok ?  setComments(data) : alert("notExist")})
@@ -24,10 +24,15 @@ const[isUpdate,setIsUpdate]=useState(-1)
         getComments()
     },  [currentUser])
 
+       
+    useEffect(() => {
+        getComments()
+    },  [currentUser])
 
     const remove = (commentId) => {
-        fetch(`http://localhost:3000/comments/${commentId}`, {
-          method: 'DELETE'
+        fetch(`http://localhost:8086/comment/${commentId}`, {
+          method: 'DELETE',
+          headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
           .then(response => {
             response.ok ? getComments() : alert("oops somthing went wrong... please try again!");

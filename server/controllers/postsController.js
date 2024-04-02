@@ -1,10 +1,11 @@
 import { ItemService } from '../service/itemsService.js';
 export default class PostsController {
 
+    
     async getPosts(req, res, next) {
         try {
-            const postService = new ItemService("post");
-            const resultItems = await postService.getAllItems()
+            const todoService = new ItemService("post");
+            const resultItems = await todoService.getItems(req)
             return res.status(200).json(resultItems);
         }
         catch (ex) {
@@ -13,21 +14,6 @@ export default class PostsController {
             err.message = ex;
             next(err)
         }
-    }
-
-    async getPostById(req, res, next) {
-        try {
-              const postService = new ItemService("post");
-            const resultItem = await postService.getItemByid(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItem });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-
     }
 
     async addPost(req, res) {

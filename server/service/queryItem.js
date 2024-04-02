@@ -5,8 +5,18 @@ function getAllItemsQuery(tableName) {
     return query;
 }
 
-function getItemtByidQuery(tableName) {
-    const query = `select * from nodedb.${tableName} where id=? and isActive`;
+// function getItemtByidQuery(tableName) {
+//     const query = `select * from nodedb.${tableName} where id=? and isActive`;
+//     return query;
+// }
+
+// function getItemtByUserIdQuery(tableName) {
+//     const query = `select * from nodedb.${tableName} where userId=? and isActive`;
+//     return query;
+// }
+
+function getItemByParamsQuery(tableName,whereConditions) {
+    const query = `select * from nodedb.${tableName} where ${whereConditions} and isActive`;
     return query;
 }
 
@@ -27,8 +37,8 @@ function updateItemQuery(tableName, stringToQuery) {
 
 export {
     getAllItemsQuery,
-    getItemtByidQuery,
     postItemQuery,
+    getItemByParamsQuery,
     deleteItemQuery,
     updateItemQuery
 }

@@ -16,7 +16,7 @@ const Posts = () => {
   const [isUpdate, setIsUpdate] = useState(-1);
   const [loading, setLoading] = useState(true)
   const getPosts = () => {
-    fetch(`http://localhost:3000/posts?userId=${currentUser.id}`)
+    fetch(`http://localhost:8086/post?userId=${currentUser.id}`)
       .then(async response => {
         const data = await response.json();
         response.ok ? (setPosts(data), setAllPosts(data)) : alert("oops somthing went wrong...")
@@ -33,9 +33,10 @@ const Posts = () => {
 
 
   const remove = (id) => {
+    fetch(`http://localhost:8086/post/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json; charset=UTF-8' }
 
-    fetch(`http://localhost:3000/posts/${id}`, {
-      method: 'DELETE'
     })
       .then(response => {
         response.ok ? getPosts() : alert("oops somthing went wrong... please try again!");
@@ -62,7 +63,7 @@ const Posts = () => {
               {showBody === index && <>
                 <span>BODY: {post.body}</span>
                 <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
-                <Link to={`./${post.id}/comments`}>comments</Link>
+                <Link to={`./${post.id}/comment`}>comments</Link>
               </>
               }
               <button className="btmShowBody" onClick={() => setShowBody(prevShowBody => prevShowBody === index ? -1 : index)}> {showBody === index ? <FaEyeSlash /> : <FaEye />}</button>

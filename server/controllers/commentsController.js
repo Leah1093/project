@@ -1,25 +1,12 @@
 import { ItemService } from '../service/itemsService.js';
 export default class CommentsController {
 
+
     async getComments(req, res, next) {
         try {
-            const commentService = new ItemService("comment");
-            const resultItems = await commentService.getAllItems()
+            const todoService = new ItemService("comment");
+            const resultItems = await todoService.getItems(req)
             return res.status(200).json(resultItems);
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err)
-        }
-    }
-
-    async getCommentById(req, res, next) {
-        try {
-              const commentService = new ItemService("comment");
-            const resultItem = await commentService.getItemByid(req.params.id);
-            return res.status(200).json({ status: 200, data: resultItem });
         }
         catch (ex) {
             const err = {}

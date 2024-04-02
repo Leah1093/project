@@ -3,9 +3,10 @@ const UpdateComment = ({setIsUpdate ,comment, getComments}) => {
     const updateComment = (element) => {
         element.preventDefault()
 
-        fetch(`http://localhost:3000/comments/${comment.id}`, {
+        fetch(`http://localhost:8086/comment/${comment.id}`, {
             method: 'PATCH',
-            body: JSON.stringify({ name: element.target[0].value, body: element.target[1].value })
+            body: JSON.stringify({ name: element.target[0].value, body: element.target[1].value }),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
         }).then( response => {
             response.ok ?( getComments() ,setIsUpdate(-1)) : alert("oops somthing went wrong... please try again!")
         });
