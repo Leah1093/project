@@ -34,8 +34,12 @@ function updateItemQuery(tableName, stringToQuery) {
     const query = `UPDATE nodedb.${tableName} SET ${stringToQuery}  WHERE id = ? and isActive`;
     return query;
 }
-
+function getPasswordQuery(params) {
+    const query =`SELECT password FROM nodedb.userpassword where id=(select id from nodedb.user where username= '${params}' and isActive)`
+    return query;
+}
 export {
+    getPasswordQuery,
     getAllItemsQuery,
     postItemQuery,
     getItemByParamsQuery,

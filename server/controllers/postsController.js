@@ -28,7 +28,7 @@ export default class PostsController {
             const err = {}
             err.statusCode = 500;
             err.message = ex;
-            next(err);
+            // next(err);
         }
     }
 

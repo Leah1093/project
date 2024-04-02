@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { query } from './db.js'
-import { getAllItemsQuery, postItemQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery } from './queryItem.js'
+import { getAllItemsQuery, postItemQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery ,getPasswordQuery} from './queryItem.js'
 let tableName;
 export class ItemService {
     constructor(name) {
@@ -69,7 +69,11 @@ export class ItemService {
         const result = await query(queryItem, [id])
         return result;
     }
-
+    async password(username){
+      let queryItem=getPasswordQuery(username)
+        const result = await query(queryItem);
+        return result;
+    }
     async updateItem(body, id) {
         let stringToQuery = "";
         Object.keys(body).forEach(key => { (key != "userId"||key != "id") && (stringToQuery += key += "=?,") });
