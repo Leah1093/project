@@ -10,6 +10,11 @@ import Comments from './components/posts/comments/Comments';
 import Layout from './components/Layout';
 import Error from "./components/Error";
 import Info from './components/info/Info';
+import Albums from './components/albums/Albums';
+import Photos from './components/albums/photos/Photos';
+import Albums from './components/albums/Albums';
+
+
 export const UserContext = createContext();
 
 function App() {
@@ -41,6 +46,10 @@ function App() {
           <Routes >
             <Route path='/' element={<Navigate to={'/login'} />} />
             <Route path='/home/user/:userId' element={<Home />}>
+            <Route path='album' element={<Layout />} >
+                <Route index element={<Albums />} />
+                <Route path=":albumId/photo" element={<Photos />} />
+              </Route>
               <Route path="post" element={<Layout />} >
                 <Route index element={<Posts />} />
                 <Route path=":postId/comment" element={<Comments />} />

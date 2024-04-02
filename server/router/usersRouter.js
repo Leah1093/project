@@ -9,8 +9,6 @@ userRouter.get("/",userController.getUsers);
 userRouter.post("/",userController.addUser);
 userRouter.delete("/:id",userController.deleteUserById);
 userRouter.put("/:id",userController.updateUserById);
-// userRouter.get("?username=:username&?password=:password",userController.)
-
 export {
     userRouter
 }

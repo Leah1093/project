@@ -27,7 +27,7 @@ const Login = () => {
             phone: data.phone
         })
         localStorage.setItem('currentUser', JSON.stringify({ username: data.username, id: data.id }));
-        navigate(`/home/user/${data.id}`)
+        navigate(`/home/user/${data.username}`)
     }
 
     const isExist = (name, password) => {
