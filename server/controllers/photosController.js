@@ -6,7 +6,7 @@ export default class PhotosController {
         try {
             const photoService = new ItemService("photo");
             const resultItems = await photoService.getItems(req)
-            return res.status(200).json(resultItems);
+            return res.status(200).json(resultItems)
         }
         catch (ex) {
             const err = {}
