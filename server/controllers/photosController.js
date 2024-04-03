@@ -3,6 +3,7 @@ export default class PhotosController {
 
 
     async getPhotos(req, res, next) {
+        console.log("function get photos")
         try {
             const photoService = new ItemService("photo");
             const resultItems = await photoService.getItems(req)
@@ -17,6 +18,7 @@ export default class PhotosController {
     }
 
     async addPhoto(req, res) {
+        console.log("function add photo")
         try {
             console.log("addPhoto"+req.body)
             const photoService = new ItemService("photo");
@@ -33,6 +35,7 @@ export default class PhotosController {
     }
 
     async deletePhotoById(req, res) {
+        console.log("function delete photo")
         try {
             const photoService = new ItemService("photo");
             await photoService.deleteItem(req.params.id);
@@ -47,6 +50,7 @@ export default class PhotosController {
     }
 
     async updatePhotoById(req, res) {
+        console.log("function update photo")
         try {
             const photoService = new ItemService("photo");
             await photoService.updateItem(req.body,req.params.id);

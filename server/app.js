@@ -10,7 +10,6 @@ import { todoRouter } from './router/todosRouter.js'
 import { entranceRouter} from './router/entranceRouter.js'
 import {logErrors} from './middleware/logError.js'
 
-
 const app = express();
 app.use(express.json());
 app.use(cors())

@@ -13,12 +13,12 @@ async function query(query, params){
 
     });
     try {
-        console.log("in try");
+        console.log("in try query");
         [results] = await connection.execute(query,params);
          console.log(results);
 
     } catch (err) {
-        console.log(err);
+        console.log("in catch query"+err);
     }
     finally {
         connection.end();

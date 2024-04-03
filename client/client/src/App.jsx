@@ -11,11 +11,7 @@ import Layout from './components/Layout';
 import Error from "./components/Error";
 import Info from './components/info/Info';
 import Albums from './components/albums/Albums';
-// import Albums from './components/albums/Albums';
 import Photos from './components/albums/photos/Photos';
-
-// import Albums from './components/albums/Albums';
-
 
 export const UserContext = createContext();
 
@@ -23,7 +19,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const user = (data) => {
     return {
-      id: data.id,
+      userId: data.userId,
       name: data.name,
       username: data.username,
       email: data.email,
@@ -33,7 +29,7 @@ function App() {
 
   useEffect(() => {
     const currntUser = JSON.parse(localStorage.getItem("currentUser"))
-    currntUser && fetch(`http://localhost:8086/user/${currntUser.id}`)
+    currntUser && fetch(`http://localhost:8086/user/${currntUser.userId}`)
       .then(async response => {
         const data = await response.json();
         response.ok && setCurrentUser(() => user(data[0]))

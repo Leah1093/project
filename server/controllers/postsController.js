@@ -3,6 +3,7 @@ export default class PostsController {
 
     
     async getPosts(req, res, next) {
+        console.log("function get posts")
         try {
             const todoService = new ItemService("post");
             const resultItems = await todoService.getItems(req)
@@ -17,6 +18,7 @@ export default class PostsController {
     }
 
     async addPost(req, res) {
+        console.log("function add post")
         try {
             const postService = new ItemService("post");
             console.log(req.body)
@@ -33,6 +35,7 @@ export default class PostsController {
     }
 
     async deletePostById(req, res) {
+        console.log("function delete post")
         try {
             const postService = new ItemService("post");
             await postService.deleteItem(req.params.id);
@@ -47,6 +50,7 @@ export default class PostsController {
     }
 
     async updatePostById(req, res) {
+        console.log("function update post")
         try {
             const postService = new ItemService("post");
             await postService.updateItem(req.body,req.params.id);

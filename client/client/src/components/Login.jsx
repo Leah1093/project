@@ -20,13 +20,13 @@ const Login = () => {
     const goToHome = (data) => {
         console.log("fdsf  "+data)
         setCurrentUser({
-            id: data.id,
+            userId: data.userId,
             name: data.name,
             username: data.username,
             email: data.email,
             phone: data.phone
         })
-        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, id: data.id }));
+        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
         navigate(`/home/user/${data.username}`)
     }
 

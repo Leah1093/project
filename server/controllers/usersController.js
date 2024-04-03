@@ -4,6 +4,7 @@ export default class UsersController {
 
     async getUsers(req, res, next) {
         try {
+            console.log("function get all users")
             const todoService = new ItemService("user");
             const resultItems = await todoService.getItems(req)
             return res.status(200).json(resultItems);
@@ -17,11 +18,11 @@ export default class UsersController {
     }
 
     async addUser(req, res) {
+        console.log("function add user")
         try {
             const userService = new ItemService("user");
             console.log(req.body)
             await userService.postItem(req.body);
-
             return res.status(200).json({ status: 200 });
         }
         catch (ex) {
@@ -33,6 +34,7 @@ export default class UsersController {
     }
 
     async deleteUserById(req, res) {
+        console.log("function delete user")
         try {
             const userService = new ItemService("user");
             await userService.deleteItem(req.params.id);
@@ -47,6 +49,7 @@ export default class UsersController {
     }
 
     async updateUserById(req, res) {
+        console.log("function update user")
         try {
             const userService = new ItemService("user");
             await userService.updateItem(req.body,req.params.id);

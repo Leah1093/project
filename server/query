@@ -1,68 +1,76 @@
 
-
-create database nodedb;
-
-
-create table user(
+create table nodedb.user(
 	id int AUTO_INCREMENT,
     name varchar(255),
     username varchar(255) not null unique,
     email varchar(255) not null,
     phone varchar(20),
+        isActive TINYINT  NULL DEFAULT 1,
     primary key(id)
 );
 
-create table userPassword(
+create table nodedb.userPassword(
 	id int AUTO_INCREMENT,
     password varchar(30) not null,
+     isActive TINYINT  NULL DEFAULT 1,
 	primary key(id),
     foreign key (id) references user(id)
 );
 
-create table todo(
+create table nodedb.todo(
 	id int AUTO_INCREMENT,
     userId int not null,
     title varchar(255),
     completed bool,
+        isActive TINYINT  NULL DEFAULT 1,
     primary key(id),
     foreign key (userId) references user(id)
  );
 
-CREATE TABLE post (
+CREATE TABLE nodedb.post (
     id INT AUTO_INCREMENT,
     userId INT NOT NULL,
     title VARCHAR(255),
     body VARCHAR(255),
+        isActive TINYINT  NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (userId)
         REFERENCES user (id)
 );
 
-create table comment(
+create table nodedb.comment(
 	id int AUTO_INCREMENT,
     postId int not null,
     name varchar(255),
     email varchar(255),
     body varchar(255),
+        isActive TINYINT  NULL DEFAULT 1,
 	primary key(id),
     foreign key (postId) references post(id)
 );
 
-CREATE TABLE album (
+CREATE TABLE nodedb.album (
     id INT AUTO_INCREMENT,
     userId INT NOT NULL,
     title VARCHAR(255),
+        isActive TINYINT  NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (userId)
         REFERENCES user (id)
 );
 
-create table photo(
+create table nodedb.photo(
 	id int AUTO_INCREMENT,
     albumId int not null,
     title varchar(255),
     url varchar(255),
     thumbnailUrl varchar(255),
+    isActive TINYINT  NULL DEFAULT 1,
 	primary key(id),
     foreign key (albumId) references album(id)
 );
+
+ALTER TABLE `nodedb`.`user` 
+ADD COLUMN `userId` VARCHAR(20) NOT NULL AFTER `id`,
+ADD UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE;
+;

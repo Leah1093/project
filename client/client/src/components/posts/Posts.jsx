@@ -62,12 +62,12 @@ const Posts = () => {
               </> : <UpdatePost post={post} getPosts={getPosts} setIsUpdate={setIsUpdate} />}
               {showBody === index && <>
                 <span>BODY: {post.body}</span>
-                {post.userId==currentUser.id&&<button  onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>}
+                {post.userId==currentUser.userId&&<button  onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>}
                 <Link to={`./${post.id}/comment`}>comments</Link>
               </>
               }
               <button className="btmShowBody" onClick={() => setShowBody(prevShowBody => prevShowBody === index ? -1 : index)}> {showBody === index ? <FaEyeSlash /> : <FaEye />}</button>
-              {post.userId==currentUser.id&&<button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id)}><MdDelete /></button>}
+              {post.userId==currentUser.userId&&<button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id)}><MdDelete /></button>}
             </div>
           )}</>}
 

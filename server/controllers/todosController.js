@@ -2,6 +2,7 @@ import { ItemService } from '../service/itemsService.js';
 export default class TodosController {
 
     async getTodos(req, res, next) {
+        console.log("function get todos")
         try {
             const todoService = new ItemService("todo");
             const resultItems = await todoService.getItems(req)
@@ -16,6 +17,7 @@ export default class TodosController {
     }
 
     async addTodo(req, res) {
+        console.log("function add todo")
         try {
             const todoService = new ItemService("todo");
             await todoService.postItem(req.body);
@@ -30,6 +32,7 @@ export default class TodosController {
     }
 
     async deleteTodoById(req, res) {
+        console.log("function delete todo")
         try {
             const todoService = new ItemService("todo");
             await todoService.deleteItem(req.params.id);
@@ -44,6 +47,7 @@ export default class TodosController {
     }
 
     async updateTodoById(req, res) {
+        console.log("function update todo")
         try {
             const todoService = new ItemService("todo");
             console.log("🥽🕶👓"+req.body)

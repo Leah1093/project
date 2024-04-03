@@ -19,8 +19,8 @@ const Todos = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [loading, setLoading] = useState(true)
   const getTodos = () => {
-    console.log(currentUser.id)
-    fetch(`http://localhost:8086/todo?userId=${currentUser.id}`)
+    console.log(currentUser.userId)
+    fetch(`http://localhost:8086/todo?userId=${currentUser.userId}`)
       .then(async response => {
         const data = await response.json();
         response.ok && (

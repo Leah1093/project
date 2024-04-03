@@ -2,11 +2,10 @@ import { ItemService } from '../service/itemsService.js';
 
 
 export default class EntranceController {
-
-
     async register(req, res) {
+        console.log("function register")
         try {
-            const todoService = new ItemService("todo");
+            const todoService = new ItemService("user");
             await todoService.postItem(req.body);
             return res.status(200).json({ status: 200 });
         }
@@ -19,6 +18,7 @@ export default class EntranceController {
     }
 
     async login(req, res) {
+        console.log("function login")
         try {
             const todoService = new ItemService("userpassword");
             let pas = await todoService.password(req.body.username);

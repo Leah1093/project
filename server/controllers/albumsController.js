@@ -3,6 +3,7 @@ export default class AlbumsController {
 
 
     async getAlbums(req, res, next) {
+        console.log("function get albums")
         try {
             const albumService = new ItemService("album");
             const resultItems = await albumService.getItems(req)
@@ -17,6 +18,7 @@ export default class AlbumsController {
     }
 
     async addAlbum(req, res) {
+        console.log("function add album")
         try {
             const albumService = new ItemService("album");
             console.log(req.body)
@@ -33,6 +35,7 @@ export default class AlbumsController {
     }
 
     async deleteAlbumById(req, res) {
+        console.log("function delete album")
         try {
             const albumService = new ItemService("album");
             await albumService.deleteItem(req.params.id);
@@ -47,6 +50,7 @@ export default class AlbumsController {
     }
 
     async updateAlbumById(req, res) {
+        console.log("function update album")
         try {
             const albumService = new ItemService("album");
             await albumService.updateItem(req.body,req.params.id);
