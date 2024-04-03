@@ -5,16 +5,6 @@ function getAllItemsQuery(tableName) {
     return query;
 }
 
-// function getItemtByidQuery(tableName) {
-//     const query = `select * from nodedb.${tableName} where id=? and isActive`;
-//     return query;
-// }
-
-// function getItemtByUserIdQuery(tableName) {
-//     const query = `select * from nodedb.${tableName} where userId=? and isActive`;
-//     return query;
-// }
-
 function getItemByParamsQuery(tableName,whereConditions) {
     const query = `select * from nodedb.${tableName} where ${whereConditions} and isActive`;
     return query;
@@ -34,10 +24,12 @@ function updateItemQuery(tableName, stringToQuery) {
     const query = `UPDATE nodedb.${tableName} SET ${stringToQuery}  WHERE id = ? and isActive`;
     return query;
 }
+
 function getPasswordQuery(params) {
     const query =`SELECT password FROM nodedb.userpassword where id=(select id from nodedb.user where username= '${params}' and isActive)`
     return query;
 }
+
 export {
     getPasswordQuery,
     getAllItemsQuery,

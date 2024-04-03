@@ -8,6 +8,42 @@ const Register = () => {
     const [exist, setExist] = useState("");
     const [input, setInput] = useState({ name: "", password: "" })
 
+
+        const [currentUser, setCurrentUser] = useContext(UserContext);
+
+    const goToHome = (data) => {
+        setCurrentUser({
+            name: data.name,
+            username: data.username,
+            email: data.email,
+            phone: data.phone,
+            website: data.website
+        })
+        localStorage.setItem('currentUser', JSON.stringify({ username: username, id: id }));
+        navigate(`/home/user/${data.username}`)
+    }
+
+    const addDetailes = (data) => {
+        const user = {
+            name: data.name,
+            username: username,
+            email: data.email,
+            phone: data.phone,
+            website: password
+        };
+
+        fetch('http://localhost:8086/entrance/register', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            
+        })
+            .then(async response => {
+                const data = await response.json();
+                (!response.ok) ? alert("oops somthing went wrong... please try again!") : goToHome(data)
+            })
+    };
+
+
     const {
         register,
         handleSubmit,
@@ -25,49 +61,80 @@ const Register = () => {
             setExist("notValid");
             return
         }
+        addDetailes()
         setInput({ name: data.username, password: data.password })
         isExist(data.username)
     }
 
     return (
         <>
-        <h1>sign up</h1>
+            <h1>sign up</h1>
             {exist === "notValid" && <div>not valid input</div>}
             {exist === "exist" && <div>you are an existing user please log in!</div>}
             {exist === "notExist" ? <UserDetailes username={input.name} password={input.password} /> :
                 <div>
                     <form noValidate onSubmit={handleSubmit(signUp)}>
+                        <input type="text" name="name" placeholder='name'
+                            {...register("name", {
+                                required: "name is required.",
+                                pattern: {
+                                    value: /^[a-zA-Z. ]+$/,
+                                    message: "Name is not valid."
+                                }
+                            })} />
+                        {errors.name && <p>{errors.name.message}</p>}
+
                         <input type='text' name='username' placeholder='username'
                             {...register("username", {
                                 required: "username is required.",
                             })} />
-                            {errors.username ? <p>{errors.username.message}</p>:<br/>}
+                        {errors.username ? <p>{errors.username.message}</p> : <br />}
 
                         <input type="password" name="password" placeholder='password'
                             {...register("password", {
                                 required: "password is required.",
                                 pattern: {
-                                    value:/^[a-zA-Z]+[.]+[a-zA-Z ]+$/ ,
+                                    value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
                                     message: "password is not valid."
                                 }
                             })} />
-                        {errors.password ? <p>{errors.password.message}</p>:<br/>}
+                        {errors.password ? <p>{errors.password.message}</p> : <br />}
 
                         <input type="password" name="passwordVerification" placeholder='password verification'
                             {...register("passwordVerification", {
                                 required: "password verification is required.",
                                 pattern: {
-                                    value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/ ,
+                                    value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
                                     message: "password verification is not valid."
                                 }
                             })} />
-                        {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p>:<br/>}
+                        {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p> : <br />}
+
+                        <input type="email" placeholder='email' name="email"
+                            {...register("email", {
+                                required: "Email is required.",
+                                pattern: {
+                                    value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                                    message: "Email is not valid."
+                                }
+                            })} />
+                        {errors.email && <p>{errors.email.message}</p>}
+
+                        <input type="tel" name="phone" placeholder='phone'
+                            {...register("phone", {
+                                required: "phone is required.",
+                                pattern: {
+                                    value: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
+                                    message: "phone is not valid."
+                                }
+                            })} />
+                        {errors.phone && <p>{errors.phone.message}</p>}
 
                         <input type="submit" value="Sign Up" />
                     </form>
                 </div>
             }
-            <div>Are you an existing user? <Link style={{textDecoration:'underline'}}to={'/login'}>please login</Link></div>
+            <div>Are you an existing user? <Link style={{ textDecoration: 'underline' }} to={'/login'}>please login</Link></div>
         </>
     );
 }

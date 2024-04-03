@@ -16,7 +16,7 @@ const Posts = () => {
   const [isUpdate, setIsUpdate] = useState(-1);
   const [loading, setLoading] = useState(true)
   const getPosts = () => {
-    fetch(`http://localhost:8086/post?userId=${currentUser.id}`)
+    fetch(`http://localhost:8086/post`)
       .then(async response => {
         const data = await response.json();
         response.ok ? (setPosts(data), setAllPosts(data)) : alert("oops somthing went wrong...")
@@ -62,12 +62,12 @@ const Posts = () => {
               </> : <UpdatePost post={post} getPosts={getPosts} setIsUpdate={setIsUpdate} />}
               {showBody === index && <>
                 <span>BODY: {post.body}</span>
-                <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
+                {post.userId==currentUser.id&&<button  onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>}
                 <Link to={`./${post.id}/comment`}>comments</Link>
               </>
               }
               <button className="btmShowBody" onClick={() => setShowBody(prevShowBody => prevShowBody === index ? -1 : index)}> {showBody === index ? <FaEyeSlash /> : <FaEye />}</button>
-              <button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id)}><MdDelete /></button>
+              {post.userId==currentUser.id&&<button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id)}><MdDelete /></button>}
             </div>
           )}</>}
 

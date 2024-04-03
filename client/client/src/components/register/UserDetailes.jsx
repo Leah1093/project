@@ -6,75 +6,38 @@ import { UserContext } from '../../App'
 const UserDetailes = ({ username, password }) => {
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useContext(UserContext);
-    let id;
-    useEffect(() => {
-        fetch(`http://localhost:8086/nextIds/users`)
-            .then(async response => {
-                const data = await response.json();
-                if (response.ok) {
-                    id = data.nextId;
-                    fetch(`http://localhost:3000/nextIds/users`, {
-                        method: 'PATCH',
-                        body: JSON.stringify({ nextId: data.nextId + 1 })
-                    });
-                } else alert("opps somthing went wrong...");
-            })
-    }, [])
 
-    const {
+       const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
 
     const goToHome = (data) => {
-        setCurrentUser({ id: data.id,
+        setCurrentUser({
             name: data.name,
             username: data.username,
             email: data.email,
-            street: data.address.street,
-            suite: data.address.suite,
-            city: data.address.city,
-            zipcode: data.address.zipcode,
-            lat: data.address.geo.lat,
-            lng: data.address.geo.lng,
             phone: data.phone,
-            website: data.website,
-            companyName: data.company.name,
-            catchPhrase: data.company.catchPhrase,
-            bs: data.company.bs})
-        localStorage.setItem('currentUser', JSON.stringify({ username:username, id:id }));
+            website: data.website
+        })
+        localStorage.setItem('currentUser', JSON.stringify({ username: username, id: id }));
         navigate(`/home/users/${data.id}`)
     }
 
     const addDetailes = (data) => {
         const user = {
-            id: id.toString(),
             name: data.name,
-            username: username ,
-            email: data.email ,
-            address: {
-                street: data.street ,
-                suite: data.suite ,
-                city: data.city ,
-                zipcode: data.zipcode ,
-                geo: {
-                    lat: data.lat ,
-                    lng: data.lng 
-                }
-            },
-            phone: data.phone ,
-            website: password ,
-            company: {
-                name: data.companyName ,
-                catchPhrase: data.catchPhrase ,
-                bs: data.bs 
-            }
+            username: username,
+            email: data.email,
+            phone: data.phone,
+            website: password
         };
 
-        fetch('http://localhost:3000/users', {
+        fetch('http://localhost:8086/entrance/register', {
             method: 'POST',
             body: JSON.stringify(user),
+            
         })
             .then(async response => {
                 const data = await response.json();
@@ -143,7 +106,7 @@ const UserDetailes = ({ username, password }) => {
                     {...register("zipcode", {
                         required: "zipcode is required.",
                         pattern: {
-                            value:/^\d{5}[-\s]?(?:\d{4})?$/ ,
+                            value: /^\d{5}[-\s]?(?:\d{4})?$/,
                             message: "zipcode is not valid."
                         }
                     })} />

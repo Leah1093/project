@@ -5,13 +5,13 @@ import { UserContext } from '../../App'
 import './Home.css'
 const Home = () => {
     const navigate = useNavigate();
-    const { userId } = useParams();
+    const { username } = useParams();
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const logout = () => {
         localStorage.removeItem("currentUser");
         window.history.replaceState(null, null, '/');
     }
-    if (userId != currentUser.id)
+    if (username != currentUser.username)
         navigate('/error')
     return (
         <>

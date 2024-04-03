@@ -21,7 +21,7 @@ const Photos = () => {
   const getPhotos = () => {
 
     setTimeout(() => {
-      fetch(`http://localhost:8086/photo?albumId=${albumId}&&_page=${page}`)
+      fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&_page=${page}`)
         .then(async response => {
           const data = await response.json();
           if (response.ok) {
@@ -40,7 +40,7 @@ const Photos = () => {
   }, [])
 
   const remove = (id) => {
-    fetch(`http://localhost:3000/photos/${id}`, {
+    fetch(`http://localhost:8086/photo/${id}`, {
       method: 'DELETE'
     })
       .then(response => {
@@ -53,7 +53,7 @@ const Photos = () => {
       <h1>photos</h1>
       <h3> album:{album.id} {album.title}</h3>
       <button onClick={() => setIsAdd(!isAdd)}>add photo</button>
-      {isAdd && <AddPhoto albumId={id} setIsAdd={setIsAdd} />}
+      {isAdd && <AddPhoto albumId={album.id} setIsAdd={setIsAdd} />}
 
       <InfiniteScroll
         loadMore={getPhotos}

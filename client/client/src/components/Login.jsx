@@ -35,16 +35,15 @@ const Login = () => {
             .then(async response => {
                 const data = await response.json();
                 (data.length==0) ? alert(`${name} does not exist`) :
-                 fetch(`http://localhost:8086/entrance/login?username=${name}&&password=${password}`, {
+                 fetch(`http://localhost:8086/entrance/login`, {
                     method: 'POST',
+                    body: JSON.stringify({username:name,password:password}),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 })
                     .then(response => {
                         (response.status!=200) ? alert("oops somthing went wrong... please try again!") : (goToHome(data[0]))
                     })
             })
-
-
     }
 
     const logIn = (data) => {

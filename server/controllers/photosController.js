@@ -18,10 +18,10 @@ export default class PhotosController {
 
     async addPhoto(req, res) {
         try {
+            console.log("addPhoto"+req.body)
             const photoService = new ItemService("photo");
             console.log(req.body)
             await photoService.postItem(req.body);
-
             return res.status(200).json({ status: 200 });
         }
         catch (ex) {

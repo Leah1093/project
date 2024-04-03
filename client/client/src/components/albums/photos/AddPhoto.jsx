@@ -4,8 +4,7 @@ const AddPhoto = ({ albumId, setIsAdd }) => {
    const addNewPhoto = (element) => {
       element.preventDefault();
       const photo = {
-         albumId: albumId,
-         id: id.toString(),
+         albumId: albumId, 
          title: element.target[0].value,
          url: element.target[1].value,
          thumbnailUrl: element.target[2].value

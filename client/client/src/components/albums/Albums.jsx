@@ -36,7 +36,7 @@ const Albums = () => {
           <div className="album-list" >
             {albums.map((album, index) => <>
               <div key={index} className="album album_item">
-                <Link state={{ id: album.id, title: album.title }} to={`./${album.id}/photos`} >
+                <Link state={{ id: album.id, title: album.title }} to={`./${album.id}/photo`} >
                   <span>album: {album.id}</span>
                   <div className="album__content">
                     <span className="album__title"> {album.title}</span>
