@@ -1,21 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
-import UserDetailes from './UserDetailes';
+// import UserDetailes from './UserDetailes';
 import { useForm } from "react-hook-form";
+import { UserContext } from '../../App'
+import { useNavigate } from 'react-router-dom';
+
 
 const Register = () => {
+    const navigate = useNavigate();
 
     const [exist, setExist] = useState("");
     // const [input, setInput] = useState({ name: "", password: "" })
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const goToHome = (data) => {
         setCurrentUser({
+            userId: data.userId,
             name: data.name,
             username: data.username,
             email: data.email,
             phone: data.phone
         })
-        localStorage.setItem('currentUser', JSON.stringify({ username: username, userId: userId }));
+        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
         navigate(`/home/user/${data.username}`)
     }
 
@@ -30,6 +35,7 @@ const Register = () => {
             setExist("notValid");
             return
         }
+        console.log("dsdsd"+data)
         const user = [{
             userId: data.userId,
             name: data.name,
@@ -38,13 +44,15 @@ const Register = () => {
             phone: data.phone
         }, { password: data.password }];
 
-        fetch('http://localhost:8086/entrance/register', {
+        fetch('http://localhost:8086/user', {
             method: 'POST',
             body: JSON.stringify(user),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(async response => {
                 const data = await response.json();
-                (!response.ok) ? alert("oops somthing went wrong... please try again!") : goToHome(data)
+                (!response.ok) ? alert("oops somthing went wrong... please try again!")
+                    : (response.status == 409) ? alert("user already exists") : goToHome(user[0])
             })
     };
 
@@ -115,8 +123,8 @@ const Register = () => {
                         {...register("userId", {
                             required: "id is required.",
                             pattern: {
-                                value: /\(?([0-9]{9})\)/,
-                                message: "id is not valid."
+                                // value: /\(?([0-9]{9})\)/,
+                                // message: "id is not valid."
                             }
                         })} />
                     {errors.userId && <p>{errors.userId.message}</p>}
@@ -135,8 +143,8 @@ const Register = () => {
                         {...register("phone", {
                             required: "phone is required.",
                             pattern: {
-                                value: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-                                message: "phone is not valid."
+                                // value: /\(?([0-9]{10})\)/,
+                                // message: "phone is not valid."
                             }
                         })} />
                     {errors.phone && <p>{errors.phone.message}</p>}

@@ -14,8 +14,9 @@ async function query(query, params){
     });
     try {
         console.log("in try query");
+        
         [results] = await connection.execute(query,params);
-         console.log(results);
+         console.log("the result"+results);
 
     } catch (err) {
         console.log("in catch query"+err);

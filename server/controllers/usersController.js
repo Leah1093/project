@@ -20,10 +20,23 @@ export default class UsersController {
     async addUser(req, res) {
         console.log("function add user")
         try {
-            const userService = new ItemService("user");
-            console.log(req.body)
-            await userService.postItem(req.body);
-            return res.status(200).json({ status: 200 });
+            let signedUp = { query: { username: req.body[0].username },params:{id:null} }
+            const userServicee = new ItemService("user");
+            console.log("🛬🛫✈️🛩️     " + signedUp.query.username)
+            const resultGetItems = await userServicee.getItems(signedUp);
+            console.log("🛩️     " + resultGetItems.id)
+            
+            if (!resultGetItems.id) {
+               
+                const resultAddUser = await userServicee.postItem(req.body[0])
+                // let id=resultAddUser.id;
+                const getNewUser=await userServicee.getItems(signedUp);
+                const userPasswordService = new ItemService("userpassword");
+                const resultAddPassword = await userPasswordService.postItem({id:getNewUser[0].id,password:req.body[1].password});       
+                return res.status(200).json({ status: 200 });
+            }
+            else
+                return res.status(409).json({ status: 409 });
         }
         catch (ex) {
             const err = {}
@@ -52,7 +65,7 @@ export default class UsersController {
         console.log("function update user")
         try {
             const userService = new ItemService("user");
-            await userService.updateItem(req.body,req.params.id);
+            await userService.updateItem(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

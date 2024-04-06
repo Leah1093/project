@@ -12,7 +12,7 @@ const Albums = () => {
   const [isAdd, setIsAdd] = useState(false)
   let [allAlbums, setAllAlbums] = useState([])
   const getAlbums = () => {
-    fetch(`http://localhost:8086/album?userId=${currentUser.id}`)
+    fetch(`http://localhost:8086/album?userId=${currentUser.userId}`)
       .then(async response => {
         const data = await response.json();
         response.ok ? setExist(true) : setExist(false);

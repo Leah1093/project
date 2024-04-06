@@ -13,7 +13,6 @@ const Comments = () => {
 const[isUpdate,setIsUpdate]=useState(-1)
 
     const getComments = () => {
-        debugger
         fetch(`http://localhost:8086/comment?postId=${postId}`)
         .then(async response => {
             const data = await response.json();
@@ -25,9 +24,9 @@ const[isUpdate,setIsUpdate]=useState(-1)
     },  [currentUser])
 
        
-    useEffect(() => {
-        getComments()
-    },  [currentUser])
+    // useEffect(() => {
+    //     getComments()
+    // },  [currentUser])
 
     const remove = (commentId) => {
         fetch(`http://localhost:8086/comment/${commentId}`, {

@@ -20,16 +20,16 @@ function App() {
   const user = (data) => {
     return {
       userId: data.userId,
-      name: data.name,
-      username: data.username,
-      email: data.email,
-      phone: data.phone
+      // name: data.name,
+      username: data.username
+      // email: data.email,
+      // phone: data.phone
     }
   }
 
   useEffect(() => {
     const currntUser = JSON.parse(localStorage.getItem("currentUser"))
-    currntUser && fetch(`http://localhost:8086/user/${currntUser.userId}`)
+    currntUser && fetch(`http://localhost:8086/user?username=${currntUser.username}`)
       .then(async response => {
         const data = await response.json();
         response.ok && setCurrentUser(() => user(data[0]))
@@ -44,7 +44,7 @@ function App() {
           <Routes >
             <Route path='/' element={<Navigate to={'/login'} />} />
             <Route path='/home/user/:username' element={<Home />}>
-            <Route path='album' element={<Layout />} >
+              <Route path='album' element={<Layout />} >
                 <Route index element={<Albums />} />
                 <Route path=":albumId/photo" element={<Photos />} />
               </Route>

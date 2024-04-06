@@ -8,8 +8,8 @@ const AddAlbum = ({ setIsAdd, getAlbums }) => {
    const addNewAlbum = (element) => {
       element.preventDefault();
       const album = {
-         userId: currentUser.id,
-         id: id.toString(),
+         userId: currentUser.userId,
+         // id: id.toString(),
          title: element.target[0].value,
       }
       console.log(album);

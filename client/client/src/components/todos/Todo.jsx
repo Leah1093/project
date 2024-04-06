@@ -1,7 +1,6 @@
 import React from "react";
 import './todosStyle.css'
 const Todo = ({ todo }) => {
-    console.log("🎃🎃🎃"+todo);
     debugger
     return (<>
         <span className="itemTodo id" >todo: {todo.id}</span>

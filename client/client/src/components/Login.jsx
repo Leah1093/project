@@ -29,7 +29,7 @@ const Login = () => {
         localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
         navigate(`/home/user/${data.username}`)
     }
-
+//צריך לשנות לבקשה אחת
     const isExist = (name, password) => {
         fetch(`http://localhost:8086/user?username=${name}`)
             .then(async response => {
@@ -48,6 +48,7 @@ const Login = () => {
 
     const logIn = (data) => {
         if ((/^[a-zA-Z.]+$/.test(data.password) === false) || data.password.indexOf('.') === -1) {
+            //לבדוק מה זה
             // setExist(false)
             return
         }

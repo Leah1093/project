@@ -28,7 +28,6 @@ const SortTodos = ({ todos, setTodos, setAllTodos }) => {
                 tempTodos = tempTodos.sort(() => Math.random() - 0.5)
                 break;
         }
-        console.log(tempTodos);
         setTodos(tempTodos)
         setAllTodos(tempTodos)
     }

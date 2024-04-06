@@ -36,8 +36,8 @@ const Todos = () => {
     }, 1000);
   }, [currentUser])
 
-  const remove = (id) => {
-    fetch(`http://localhost:8086/todo/${id}`, {
+  const remove = (todoId) => {
+    fetch(`http://localhost:8086/todo/${todoId}`, {
       method: 'DELETE',
       headers: { 'Content-type': 'application/json; charset=UTF-8' }
     })

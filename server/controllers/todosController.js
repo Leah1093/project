@@ -18,6 +18,7 @@ export default class TodosController {
 
     async addTodo(req, res) {
         console.log("function add todo")
+        console.log("😅😅😅"+req.body[0])
         try {
             const todoService = new ItemService("todo");
             await todoService.postItem(req.body);

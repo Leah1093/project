@@ -15,8 +15,8 @@ const Home = () => {
         navigate('/error')
     return (
         <>
-            <header>
-                <nav>
+            <header className={'sticky'}>
+                <nav >
                     <NavLink onClick={logout} to={'/login'} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>Logout </NavLink>
                     <NavLink to="./album" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>Albums </NavLink>
                     <NavLink to="./post" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>Posts </NavLink>

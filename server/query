@@ -24,7 +24,7 @@ create table nodedb.todo(
     completed bool,
         isActive TINYINT  NULL DEFAULT 1,
     primary key(id),
-    foreign key (userId) references user(id)
+    foreign key (userId) references user(userId)
  );
 
 CREATE TABLE nodedb.post (
@@ -35,7 +35,7 @@ CREATE TABLE nodedb.post (
         isActive TINYINT  NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (userId)
-        REFERENCES user (id)
+        REFERENCES user (userId)
 );
 
 create table nodedb.comment(
@@ -56,7 +56,7 @@ CREATE TABLE nodedb.album (
         isActive TINYINT  NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (userId)
-        REFERENCES user (id)
+        REFERENCES user (userId)
 );
 
 create table nodedb.photo(
@@ -71,6 +71,6 @@ create table nodedb.photo(
 );
 
 ALTER TABLE `nodedb`.`user` 
-ADD COLUMN `userId` VARCHAR(20) NOT NULL AFTER `id`,
+ADD COLUMN `userId` INT NOT NULL AFTER `id`,
 ADD UNIQUE INDEX `userId_UNIQUE` (`userId` ASC) VISIBLE;
 ;

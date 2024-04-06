@@ -2,20 +2,20 @@ import { ItemService } from '../service/itemsService.js';
 
 
 export default class EntranceController {
-    async register(req, res) {
-        console.log("function register")
-        try {
-            const todoService = new ItemService("user");
-            await todoService.postItem(req.body);
-            return res.status(200).json({ status: 200 });
-        }
-        catch (ex) {
-            const err = {}
-            err.statusCode = 500;
-            err.message = ex;
-            next(err);
-        }
-    }
+    // async register(req, res) {
+    //     console.log("function register")
+    //     try {
+    //         const registerService = new ItemService("user");
+    //         await registerService.getItems(req.body);
+    //         return res.status(200).json({ status: 200 });
+    //     }
+    //     catch (ex) {
+    //         const err = {}
+    //         err.statusCode = 500;
+    //         err.message = ex;
+    //         next(err);
+    //     }
+    // }
 
     async login(req, res) {
         console.log("function login")

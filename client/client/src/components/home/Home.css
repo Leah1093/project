@@ -16,3 +16,15 @@
 }
 .active:hover{color: red;
 }
+nav {
+/* 
+    position: fixed;
+    LEFT: 36%;
+    top: 20%; */
+    /* left: 0;
+    width: 100%; */
+   
+  }
+  /* h1{
+    margin-top: -200%;
+  } */
