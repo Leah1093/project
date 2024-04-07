@@ -2,21 +2,25 @@ export const logErrors = (error, req, res, next) => {
     const statusCode = error && error.hasOwnProperty("statusCode") ? error.statusCode : 500;
     const message = error && error.hasOwnProperty("message") ? error.message : '';
     console.error(`error statusCode:  ${statusCode} message: ${message} `)
-    return res.status(statusCode).json({ error: errMessageForClient(statusCode) });
+    return res.status(statusCode).json({ status:statusCode, error: errMessageForClient(statusCode) });
 }
 
 function errMessageForClient(statusCode) {
     switch (statusCode) {
         case 400:
-            return 'Invalid request parameters';
+            return 'Invalid request parameters' ;
         case 401:
-            return 'Authorization required';
+            return 'Authorization required' ;
+        case 407:
+            return  'Authorization failed' ;
         case 404:
-            return 'Not found';
+            return  'Not found' 
+        case 409:
+            return 'The request cannot be completed due to a conflict' ;
         case 500:
-            return 'Internal Server Error';
+            return  'Internal Server Error' ;
         default:
-            return 'Something went wrong!';
+            return 'Something went wrong!' ;
     }
 }
 

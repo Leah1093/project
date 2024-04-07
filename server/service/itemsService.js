@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { query } from './db.js'
-import { getAllItemsQuery, postItemQuery,getAllPhotosQuery,getNumberOfPhotoQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
+import { getAllItemsQuery, postItemQuery, getAllPhotosQuery, getNumberOfPhotoQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
 let tableName;
 export class ItemService {
 
@@ -8,41 +8,36 @@ export class ItemService {
         console.log(`the table name is: ${name}`)
         tableName = name;
     }
-
+    //אולי לשנות לגנרי
     async getnumberOfphoto() {
         let queryItem;
-     queryItem = getNumberOfPhotoQuery();
+        queryItem = getNumberOfPhotoQuery();
         console.log("query in get item " + queryItem);
         const result = await query(queryItem);
         return result;
     }
-
-
+    //אולי לשנות לגנרי
     async getPhotosByPage(req) {
         let queryItem;
-        let offset=(req.query.page-1)*10;
+        let offset = (req.query.page - 1) * 10;
         queryItem = getAllPhotosQuery(`OFFSET ${offset}`)
         console.log("query in get item " + queryItem);
         const result = await query(queryItem, [req.query.albumId]);
         return result;
     }
 
-    
     async getItems(req) {
         console.log("function get items")
         let queryItem, conditionsParams = [], conditionsValues = [];
         if (req.params.id) {
-            console.log("1")
             conditionsValues = req.params.id;
             queryItem = getItemByParamsQuery(tableName, `id=?`)
         }
         else {
-            console.log("2")
             let querry = req.query;
             if (Object.entries(querry).length === 0)
                 queryItem = getAllItemsQuery(tableName);
             else {
-                console.log("3")
                 Object.keys(querry).map((key) => {
                     conditionsParams.push(`${key} = ?`)
                     conditionsValues.push(querry[key])
@@ -53,7 +48,7 @@ export class ItemService {
             }
         }
         console.log("query in get item " + queryItem)
-        const result = await query(queryItem, [conditionsValues.toString()]);
+        const result = await query(queryItem, [conditionsValues.toString()])
         return result;
     }
 
@@ -64,21 +59,11 @@ export class ItemService {
         let queryItem;
         queryItem = postItemQuery(tableName, tableName != "userpassword" ? "NULL," + "?,".repeat(Object.keys(body).length - 1) + "?" : "?,".repeat(Object.keys(body).length - 1) + "?")
         console.log("query in post item" + queryItem + Object.values(body))
-        const result = await query(queryItem, Object.values(body))
+        const result = await query(queryItem, Object.values(body));
         return result;
     }
 
-    // async registerService(body) {
-    //     console.log(Object.values(body)+"function register Service")
-    //     let queryItem;
-    //     queryItem = registerQuery()
-    //     console.log("query in post item" + queryItem)
-    //     let arr=Object.values(body);
-
-    //     const result = await query(queryItem, [Object.values(body)])
-    //     return result;
-    // }
-
+    //לברר האם צריך לבדוק אם קיים פריט
     async deleteItem(id) {
         console.log("function delete item")
         const queryItem = deleteItemQuery(tableName);
@@ -116,57 +101,3 @@ export class ItemService {
 
 
 
-
-
-// const getPhotos = () => {
-
-//     setTimeout(() => {
-//       fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&page=${page}`)
-//         .then(async response => {
-//           const data = await response.json();
-//           if (response.ok) {
-//             first ? setItems(prevItems => [...prevItems, ...(data)]) : setItems(data);
-//             setPage(data+1);
-//             setHasMore(data.next != null);
-//           }
-//         })
-//     }, 400);
-
-
-
-//   };
-
-
-
-// async getPhotoss(req) {
-//     let queryItem;
-//     let offset=(req.query.page-1)*10;
-//     queryItem = getAllPhotoisQuery(`OFFSET ${offset}`)
-//     console.log("query in get item " + queryItem)
-    
-
-//     const result = await query(queryItem, [req.query.albumId]);
-//     return result;
-// }
-// function getAllPhotoisQuery(offset) {
-
-//     const query = `SELECT * FROM nodedb.photo  where albumId=? and isActive LIMIT 10  ${offset} `;
-
-//     return query;
-// }
-
-  
-// async getPhotos(req, res, next) {
-//     console.log("function get photos   "+req.query.albumId)
-//     try {
-//         const photoService = new ItemService("photo");
-//         const resultItems = await photoService.getPhotoss(req)
-//         return res.status(200).json(resultItems)
-//     }
-//     catch (ex) {
-//         const err = {}
-//         err.statusCode = 500;
-//         err.message = ex;
-//         next(err)
-//     }
-// }

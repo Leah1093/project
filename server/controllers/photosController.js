@@ -22,19 +22,24 @@ export default class PhotosController {
         try {
             const photoService = new ItemService("photo");
             const resultItems = await photoService.getPhotosByPage(req);
-            const hasmorePhotos=await photoService.getnumberOfphoto();
-            let hasMore=true;
-            console.log("😂    "+hasmorePhotos[0].count)
-            hasmorePhotos[0].count%10==0?(hasmorePhotos[0].count/10==req.query.page&& (hasMore=false))
-            :((parseInt(hasmorePhotos[0].count/10)+1)==req.query.page&& (hasMore=false))
-            console.log("😂    "+(parseInt(hasmorePhotos[0].count/10)+1)+req.query.page)
-            
-
-            return res.status(200).json({data:resultItems,hasMore:hasMore})
+            const hasmorePhotos = await photoService.getnumberOfphoto();
+            let hasMore = true;
+            hasmorePhotos[0].count % 10 == 0 ? (hasmorePhotos[0].count / 10 == req.query.page && (hasMore = false))
+                : ((parseInt(hasmorePhotos[0].count / 10) + 1) == req.query.page && (hasMore = false))
+            if (resultItems.length == 0)
+                throw new Error("No elements found")
+            return res.status(200).json({ data: resultItems, hasMore: hasMore })
         }
         catch (ex) {
             const err = {}
-            err.statusCode = 500;
+            switch (err.message) {
+                case "No elements found":
+                    err.statusCode = 500;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
             err.message = ex;
             next(err)
         }
@@ -45,7 +50,7 @@ export default class PhotosController {
     async addPhoto(req, res) {
         console.log("function add photo")
         try {
-            console.log("addPhoto"+req.body)
+            console.log("addPhoto" + req.body)
             const photoService = new ItemService("photo");
             console.log(req.body)
             await photoService.postItem(req.body);
@@ -78,7 +83,7 @@ export default class PhotosController {
         console.log("function update photo")
         try {
             const photoService = new ItemService("photo");
-            await photoService.updateItem(req.body,req.params.id);
+            await photoService.updateItem(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
@@ -88,5 +93,5 @@ export default class PhotosController {
             next(err)
         }
     }
-  
+
 }

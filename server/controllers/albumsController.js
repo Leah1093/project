@@ -7,11 +7,21 @@ export default class AlbumsController {
         try {
             const albumService = new ItemService("album");
             const resultItems = await albumService.getItems(req)
+            if (resultItems.length == 0)
+                throw new Error("No elements found")
             return res.status(200).json(resultItems);
         }
+
         catch (ex) {
             const err = {}
-            err.statusCode = 500;
+            switch (err.message) {
+                case "No elements found":
+                    err.statusCode = 500;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
             err.message = ex;
             next(err)
         }
@@ -53,7 +63,7 @@ export default class AlbumsController {
         console.log("function update album")
         try {
             const albumService = new ItemService("album");
-            await albumService.updateItem(req.body,req.params.id);
+            await albumService.updateItem(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

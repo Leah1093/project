@@ -1,4 +1,5 @@
 import { ItemService } from '../service/itemsService.js';
+
 export default class UsersController {
 
 
@@ -7,11 +8,23 @@ export default class UsersController {
             console.log("function get all users")
             const todoService = new ItemService("user");
             const resultItems = await todoService.getItems(req)
+            if (resultItems.length == 0)
+                throw new Error("No elements found")
             return res.status(200).json(resultItems);
         }
         catch (ex) {
             const err = {}
-            err.statusCode = 500;
+            switch (err.message) {
+                case "No elements found":
+                    err.statusCode = 404;
+                    break;
+                case "Element already exists":
+                    err.statusCode = 409;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
             err.message = ex;
             next(err)
         }
@@ -23,21 +36,30 @@ export default class UsersController {
             let signedUp = { query: { username: req.body[0].username }, params: { id: null } }
             const userServicee = new ItemService("user");
             const resultGetItems = await userServicee.getItems(signedUp);
-            if (!resultGetItems[0]) {
+            if (resultGetItems.length == 0) {
 
                 const resultAddUser = await userServicee.postItem(req.body[0])
-                // let id=resultAddUser.id;
-                const getNewUser = await userServicee.getItems(signedUp);
+                // const getNewUser = await userServicee.getItems(signedUp);
                 const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.postItem({ id: getNewUser[0].id, password: req.body[1].password });
+                const resultAddPassword = await userPasswordService.postItem({ id: resultGetItems[0].id, password: req.body[1].password });
                 return res.status(200).json({ status: 200 });
+            } else {
+                throw new Error("No elements found")
             }
-            else
-                return res.status(409).json({ status: 409 });
         }
         catch (ex) {
             const err = {}
-            err.statusCode = 500;
+            switch (err.message) {
+                case "No elements found":
+                    err.statusCode = 404;
+                    break;
+                case "Element already exists":
+                    err.statusCode = 409;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
             err.message = ex;
             next(err);
         }
@@ -48,23 +70,39 @@ export default class UsersController {
             let editUser = { query: { username: req.body[0].username }, params: { id: null } }
             const userServicee = new ItemService("user");
             const resultGetItems = await userServicee.getItems(editUser);
-            if (resultGetItems[0]) {
+            if (resultGetItems.length != 0) {
                 const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.getItems({query:null, params: { id: resultGetItems[0].id } });
+                const resultAddPassword = await userPasswordService.getItems({ query: null, params: { id: resultGetItems[0].id } });
                 if (resultAddPassword[0].password == req.body[0].password) {
-                    console.log("😒"+req.body[1].password)
-                    const editPassword = await userPasswordService.updateItem({password:req.body[1].password}, resultGetItems[0].id);
-                return res.status(200).json({ status: 200 });
+                    const editPassword = await userPasswordService.updateItem({ password: req.body[1].password }, resultGetItems[0].id);
+                    return res.status(200).json({ status: 200 });
                 }
-                else{
-                    console.log("הקוד לא שווה")
+                else {
+                    throw new Error('Authentication failed')
                 }
+            } else {
+                throw new Error("No elements found");
             }
-            else
-            console.log("אין כזה משתמש")
 
-        } catch {
-
+        }
+        catch (ex) {
+            const err = {};
+            switch (err.message) {
+                case 'Authentication failed':
+                    err.statusCode = 407;
+                    break;
+                case "No such user exists":
+                    err.statusCode = 404;
+                    break;
+                case "No elements found":
+                    err.statusCode = 404;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
+            err.message = ex;
+            next(err)
         }
     }
 

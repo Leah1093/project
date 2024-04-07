@@ -7,11 +7,20 @@ export default class CommentsController {
         try {
             const todoService = new ItemService("comment");
             const resultItems = await todoService.getItems(req)
+            if (resultItems.length == 0)
+            throw new Error("No elements found")
             return res.status(200).json(resultItems);
         }
         catch (ex) {
             const err = {}
-            err.statusCode = 500;
+            switch (err.message) {
+                case "No elements found":
+                    err.statusCode = 500;
+                    break;
+                default:
+                    err.statusCode = 500;
+                    break;
+            }
             err.message = ex;
             next(err)
         }
