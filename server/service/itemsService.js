@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { query } from './db.js'
-import { getAllItemsQuery, postItemQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
+import { getAllItemsQuery, postItemQuery,getAllPhotosQuery,getNumberOfPhotoQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
 let tableName;
 export class ItemService {
 
@@ -8,6 +8,25 @@ export class ItemService {
         console.log(`the table name is: ${name}`)
         tableName = name;
     }
+
+    async getnumberOfphoto() {
+        let queryItem;
+     queryItem = getNumberOfPhotoQuery();
+        console.log("query in get item " + queryItem);
+        const result = await query(queryItem);
+        return result;
+    }
+
+
+    async getPhotosByPage(req) {
+        let queryItem;
+        let offset=(req.query.page-1)*10;
+        queryItem = getAllPhotosQuery(`OFFSET ${offset}`)
+        console.log("query in get item " + queryItem);
+        const result = await query(queryItem, [req.query.albumId]);
+        return result;
+    }
+
     
     async getItems(req) {
         console.log("function get items")
@@ -112,12 +131,14 @@ export class ItemService {
 //           }
 //         })
 //     }, 400);
+
+
+
 //   };
 
 
 
 // async getPhotoss(req) {
-//     console.log("😅😅"+req.query.albumId)
 //     let queryItem;
 //     let offset=(req.query.page-1)*10;
 //     queryItem = getAllPhotoisQuery(`OFFSET ${offset}`)

@@ -21,13 +21,10 @@ const AddTodo = ({ setIsAdd, getTodos }) => {
 
 
     const addNewTodo = (element) => {
-
         element.preventDefault();
         const todo = {
             userId: currentUser.userId,
-            // id: id.toString(),
             title: element.target[0].value,
-            // completed: element.target[1].checked
             completed: false
         }
         console.log(todo);

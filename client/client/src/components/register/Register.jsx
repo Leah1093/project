@@ -35,14 +35,16 @@ const Register = () => {
             setExist("notValid");
             return
         }
-        console.log("dsdsd"+data)
+        console.log("dsdsd" + data)
         const user = [{
-            userId: data.userId,
+            userId: parseInt(data.userId),
             name: data.name,
             username: data.username,
             email: data.email,
             phone: data.phone
         }, { password: data.password }];
+        console.log("dsdsd" + data)
+
 
         fetch('http://localhost:8086/user', {
             method: 'POST',
@@ -51,29 +53,29 @@ const Register = () => {
         })
             .then(async response => {
                 const data = await response.json();
-                (!response.ok) ? alert("oops somthing went wrong... please try again!")
-                    : (response.status == 409) ? alert("user already exists") : goToHome(user[0])
+                (!response.ok) ? ((response.status == 409) ? alert("user already exists") : alert("oops somthing went wrong... please try again!"))
+                    : goToHome(user[0])
             })
     };
 
 
 
 
-    const isExist = (name) => {
-        fetch(`http://localhost:8086/users?username=${name}`)
-            .then(response => response.json())
-            .then(response => (response.length) ? setExist("exist") : setExist("notExist"))
-    }
+    // const isExist = (name) => {
+    //     fetch(`http://localhost:8086/users?username=${name}`)
+    //         .then(response => response.json())
+    //         .then(response => (response.length) ? setExist("exist") : setExist("notExist"))
+    // }
 
-    const signUp = (data) => {
-        if (data.password != data.passwordVerification) {
-            setExist("notValid");
-            return
-        }
-        // addDetailes()
-        setInput({ name: data.username, password: data.password })
-        isExist(data.username)
-    }
+    // const signUp = (data) => {
+    //     if (data.password != data.passwordVerification) {
+    //         setExist("notValid");
+    //         return
+    //     }
+    //     // addDetailes()
+    //     setInput({ name: data.username, password: data.password })
+    //     isExist(data.username)
+    // }
 
     return (
         <>

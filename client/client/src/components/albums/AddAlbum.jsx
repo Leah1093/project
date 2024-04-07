@@ -19,9 +19,9 @@ const AddAlbum = ({ setIsAdd, getAlbums }) => {
          body: JSON.stringify(album),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
       }).then(response => {
-         response.ok ? setIsAdd(false) : alert("oops somthing went wrong... please try again!")
+         response.ok ?(setIsAdd(false), getAlbums()) : alert("oops somthing went wrong... please try again!")
       })
-      getAlbums();
+     
    }
 
 

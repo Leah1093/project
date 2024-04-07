@@ -20,17 +20,20 @@ const Photos = () => {
 
   const getPhotos = () => {
 
-    setTimeout(() => {
-      fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&_page=${page}`)
-        .then(async response => {
-          const data = await response.json();
-          if (response.ok) {
-            first ? setItems(prevItems => [...prevItems, ...(data.data)]) : setItems(data.data);
-            setPage(data.next);
-            setHasMore(data.next != null);
-          }
-        })
-    }, 400);
+
+    hasMore&&fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&page=${page}`)
+    .then(async response => {
+      const data = await response.json();
+      if (response.ok) {
+        (page!=1) ? setItems(prevItems => [...prevItems, ...(data.data)]) :(setItems(data.data));
+        setPage(page+1);
+        setHasMore(data.hasMore);
+      }
+    })
+
+    // setTimeout(() => {
+      
+    // }, 400);
   };
 
   useEffect(() => {

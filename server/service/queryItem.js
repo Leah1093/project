@@ -38,8 +38,21 @@ function getPasswordQuery() {
     return query;
 }
 
+
+
+function getAllPhotosQuery(offset) {
+    const query = `SELECT * FROM nodedb.photo where albumId=? and isActive LIMIT 10  ${offset} `;
+    return query;
+}
+
+function getNumberOfPhotoQuery(){
+    const query=`select count(id) as count from nodedb.photo`
+    return query;
+}
+
 export {
-    
+    getNumberOfPhotoQuery,
+    getAllPhotosQuery,
     getPasswordQuery,
     getAllItemsQuery,
     postItemQuery,

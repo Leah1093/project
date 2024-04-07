@@ -8,10 +8,12 @@ import UpdatePost from "./UpdatePost";
 import Style from '../loader.module.css'
 import { UserContext } from '../../App'
 import './posts.css'
+import AddPost from "./AddPost";
 const Posts = () => {
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [showBody, setShowBody] = useState(-1)
+  const [isAdd, setIsAdd] = useState(false)
   let [allPosts, setAllPosts] = useState([])
   const [isUpdate, setIsUpdate] = useState(-1);
   const [loading, setLoading] = useState(true)
@@ -46,6 +48,8 @@ const Posts = () => {
   return (
     <>
       <h1>Posts</h1>
+      <button onClick={() => setIsAdd(!isAdd)}>add post</button>
+      {isAdd && <AddPost setIsAdd={setIsAdd} getPosts={getPosts} />}
       <div className="posts_container">
         <SearchPosts setPosts={setPosts} allPosts={allPosts} posts={posts} />
         {loading ? <div className={Style.loader}>

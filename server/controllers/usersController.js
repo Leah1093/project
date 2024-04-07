@@ -20,19 +20,16 @@ export default class UsersController {
     async addUser(req, res) {
         console.log("function add user")
         try {
-            let signedUp = { query: { username: req.body[0].username },params:{id:null} }
+            let signedUp = { query: { username: req.body[0].username }, params: { id: null } }
             const userServicee = new ItemService("user");
-            console.log("🛬🛫✈️🛩️     " + signedUp.query.username)
             const resultGetItems = await userServicee.getItems(signedUp);
-            console.log("🛩️     " + resultGetItems.id)
-            
-            if (!resultGetItems.id) {
-               
+            if (!resultGetItems[0]) {
+
                 const resultAddUser = await userServicee.postItem(req.body[0])
                 // let id=resultAddUser.id;
-                const getNewUser=await userServicee.getItems(signedUp);
+                const getNewUser = await userServicee.getItems(signedUp);
                 const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.postItem({id:getNewUser[0].id,password:req.body[1].password});       
+                const resultAddPassword = await userPasswordService.postItem({ id: getNewUser[0].id, password: req.body[1].password });
                 return res.status(200).json({ status: 200 });
             }
             else
@@ -43,6 +40,31 @@ export default class UsersController {
             err.statusCode = 500;
             err.message = ex;
             next(err);
+        }
+    }
+
+    async editPassword(req, res) {
+        try {
+            let editUser = { query: { username: req.body[0].username }, params: { id: null } }
+            const userServicee = new ItemService("user");
+            const resultGetItems = await userServicee.getItems(editUser);
+            if (resultGetItems[0]) {
+                const userPasswordService = new ItemService("userpassword");
+                const resultAddPassword = await userPasswordService.getItems({query:null, params: { id: resultGetItems[0].id } });
+                if (resultAddPassword[0].password == req.body[0].password) {
+                    console.log("😒"+req.body[1].password)
+                    const editPassword = await userPasswordService.updateItem({password:req.body[1].password}, resultGetItems[0].id);
+                return res.status(200).json({ status: 200 });
+                }
+                else{
+                    console.log("הקוד לא שווה")
+                }
+            }
+            else
+            console.log("אין כזה משתמש")
+
+        } catch {
+
         }
     }
 

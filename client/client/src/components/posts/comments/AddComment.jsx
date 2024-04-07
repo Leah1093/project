@@ -19,9 +19,9 @@ const AddComment = ({ postId, setIsAdd, getComments }) => {
          body: JSON.stringify(comment),
          headers: { 'Content-type': 'application/json; charset=UTF-8' }
       }).then(response => {
-         response.ok ? setIsAdd(false) : alert("oops somthing went wrong... please try again!")
+         response.ok ?( setIsAdd(false), getComments()) : alert("oops somthing went wrong... please try again!")
       })
-      getComments();
+     
    }
 
    return (

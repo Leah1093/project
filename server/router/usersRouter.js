@@ -6,8 +6,10 @@ const userController = new usersController();
 userRouter.get("/:id",userController.getUsers)
 userRouter.get("/",userController.getUsers);
 userRouter.post("/",userController.addUser);
+userRouter.put("/",userController.editPassword);
 userRouter.delete("/:id",userController.deleteUserById);
 userRouter.put("/:id",userController.updateUserById);
+
 export {
     userRouter
 }

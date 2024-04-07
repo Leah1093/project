@@ -12,7 +12,7 @@ import Error from "./components/Error";
 import Info from './components/info/Info';
 import Albums from './components/albums/Albums';
 import Photos from './components/albums/photos/Photos';
-
+import EditPassword from './components/editPassword/EditPassword';
 export const UserContext = createContext();
 
 function App() {
@@ -20,10 +20,10 @@ function App() {
   const user = (data) => {
     return {
       userId: data.userId,
-      // name: data.name,
-      username: data.username
-      // email: data.email,
-      // phone: data.phone
+      name: data.name,
+      username: data.username,
+      email: data.email,
+      phone: data.phone
     }
   }
 
@@ -53,6 +53,7 @@ function App() {
                 <Route path=":postId/comment" element={<Comments />} />
               </Route>
               <Route path='todo' element={<Todos />} />
+              <Route path='editPassword' element={  <EditPassword />} />
               <Route path='info' element={<Info />} />
             </Route>
             <Route path='/login' element={<Login />} />
