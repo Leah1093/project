@@ -32,13 +32,13 @@ const[isUpdate,setIsUpdate]=useState(-1)
     //     getComments()
     // },  [currentUser])
 
-    const remove = (commentId) => {
+    const remove = (commentId,i) => {
         fetch(`http://localhost:8086/comment/${commentId}`, {
           method: 'DELETE',
           headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
           .then(response => {
-            response.ok ? getComments() : alert("oops somthing went wrong... please try again!");
+            response.ok ? setComments((prev => [...prev.slice(0,i),...prev.slice(i+1)])) : alert("oops somthing went wrong... please try again!");
           })
       }
     return (
@@ -61,7 +61,7 @@ const[isUpdate,setIsUpdate]=useState(-1)
                 <br />
                 {currentUser.email===comment.email&&<>
                 <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
-                <button disabled={isUpdate === index} onClick={() => remove(comment.id)}><MdDelete /></button>
+                <button disabled={isUpdate === index} onClick={() => remove(comment.id,index)}><MdDelete /></button>
                 </>}
             </div>)}
             </div></> : <p>no comments</p>}
