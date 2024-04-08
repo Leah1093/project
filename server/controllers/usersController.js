@@ -34,14 +34,19 @@ export default class UsersController {
         console.log("function add user")
         try {
             let signedUp = { query: { username: req.body[0].username }, params: { id: null } }
+
             const userServicee = new ItemService("user");
+
             const resultGetItems = await userServicee.getItems(signedUp);
             if (resultGetItems.length == 0) {
 
-                const resultAddUser = await userServicee.postItem(req.body[0])
+                const resultAddUser = await userServicee.postItem(req.body[0]);
+                const resultGetItem = await userServicee.getItems(signedUp);
+
                 // const getNewUser = await userServicee.getItems(signedUp);
                 const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.postItem({ id: resultGetItems[0].id, password: req.body[1].password });
+
+                const resultAddPassword = await userPasswordService.postItem({ id: resultGetItem[0].id, password: req.body[1].password });
                 return res.status(200).json({ status: 200 });
             } else {
                 throw new Error("No elements found")
@@ -49,8 +54,8 @@ export default class UsersController {
         }
         catch (ex) {
             const err = {}
-            switch (err.message) {
-                case "No elements found":
+            switch (ex.message) {
+                case 'No elements found':
                     err.statusCode = 404;
                     break;
                 case "Element already exists":
@@ -60,7 +65,8 @@ export default class UsersController {
                     err.statusCode = 500;
                     break;
             }
-            err.message = ex;
+            err.message = ex.message;
+            
             next(err);
         }
     }

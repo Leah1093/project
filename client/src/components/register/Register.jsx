@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
-// import UserDetailes from './UserDetailes';
 import { useForm } from "react-hook-form";
 import { UserContext } from '../../App'
 import { useNavigate } from 'react-router-dom';
-
+import { sha256 } from 'js-sha256'
+const salt = bcrypt.genSaltSync(10);
 
 const Register = () => {
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const [exist, setExist] = useState("");
     // const [input, setInput] = useState({ name: "", password: "" })
     const [currentUser, setCurrentUser] = useContext(UserContext);
@@ -35,14 +35,17 @@ const Register = () => {
             setExist("notValid");
             return
         }
-        console.log("dsdsd" + data)
+        let a = sha256("aaaa")
+
+        const hashedPassword = bcrypt.hashSync(data.password, '$2a$10$CwTycUXWue0Thq9StjUM0u')
+        console.log("dsdsd" + hashedPassword)
         const user = [{
             userId: parseInt(data.userId),
             name: data.name,
             username: data.username,
             email: data.email,
             phone: data.phone
-        }, { password: data.password }];
+        }, { password: hashedPassword }];
         console.log("dsdsd" + data)
 
 
@@ -82,7 +85,6 @@ const Register = () => {
             <h1>sign up</h1>
             {exist === "notValid" && <div>not valid input</div>}
             {exist === "exist" && <div>you are an existing user please log in!</div>}
-            {/* {exist === "notExist" ? <UserDetailes username={input.name} password={input.password} /> : */}
             <div>
                 <form noValidate onSubmit={handleSubmit(addDetailes)}>
                     <input type="text" name="name" placeholder='name'
