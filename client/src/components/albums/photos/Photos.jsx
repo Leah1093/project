@@ -38,13 +38,12 @@ const Photos = () => {
     setFirst(true)
   }, [])
 
-  const remove = (id) => {
+  const remove = (id,i) => {
     fetch(`http://localhost:8086/photo/${id}`, {
       method: 'DELETE'
     })
       .then(response => {
-        //לשנות
-        response.ok ? setItems((prev => prev.slice(0,-1))) : alert("oops somthing went wrong... please try again!");
+        response.ok ? setItems((prev => [...prev.slice(0,i),...prev.slice(i+1)])) : alert("oops somthing went wrong... please try again!");
       })
   }
 
@@ -66,7 +65,7 @@ const Photos = () => {
                 <span key={index} className="photo-item">
                   <img src={photo.thumbnailUrl} />
                   <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
-                  <button disabled={isUpdate === index} onClick={() => remove(photo.id)}><MdDelete /></button>
+                  <button disabled={isUpdate === index} onClick={() => remove(photo.id,index)}><MdDelete /></button>
                   {isUpdate === index &&
                     <UpdatePhoto setIsUpdate={setIsUpdate} photo={photo} getPhotos={getPhotos} setItems={setItems} />}
                 </span>

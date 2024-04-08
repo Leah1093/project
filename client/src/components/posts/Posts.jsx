@@ -36,14 +36,14 @@ const Posts = () => {
   }, [currentUser])
 
 
-  const remove = (id) => {
+  const remove = (id,i) => {
     fetch(`http://localhost:8086/post/${id}`, {
       method: 'DELETE',
       headers: { 'Content-type': 'application/json; charset=UTF-8' }
 
     })
       .then(response => {
-        response.ok ? getPosts() : alert("oops somthing went wrong... please try again!");
+        response.ok ? (setPosts((prev => [...prev.slice(0,i),...prev.slice(i+1)])),setAllPosts((prev => [...prev.slice(0,i),...prev.slice(i+1)]))) : alert("oops somthing went wrong... please try again!");
       })
   }
 
@@ -75,7 +75,7 @@ const Posts = () => {
                 </>
                 }
                 <button className="btmShowBody" onClick={() => setShowBody(prevShowBody => prevShowBody === index ? -1 : index)}> {showBody === index ? <FaEyeSlash /> : <FaEye />}</button>
-                {post.userId == currentUser.userId && <button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id)}><MdDelete /></button>}
+                {post.userId == currentUser.userId && <button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id,index)}><MdDelete /></button>}
               </div>
             )}
           </> : <p>no posts</p>}</>}
