@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { UserContext } from '../../App'
 import { useNavigate } from 'react-router-dom';
-import { sha256 } from 'js-sha256'
-const salt = bcrypt.genSaltSync(10);
 
 const Register = () => {
 
@@ -35,17 +33,16 @@ const Register = () => {
             setExist("notValid");
             return
         }
-        let a = sha256("aaaa")
 
-        const hashedPassword = bcrypt.hashSync(data.password, '$2a$10$CwTycUXWue0Thq9StjUM0u')
-        console.log("dsdsd" + hashedPassword)
+        // const hashedPassword = bcrypt.hashSync(data.password, '$2a$10$CwTycUXWue0Thq9StjUM0u')
+        // console.log("dsdsd" + hashedPassword)
         const user = [{
             userId: parseInt(data.userId),
             name: data.name,
             username: data.username,
             email: data.email,
             phone: data.phone
-        }, { password: hashedPassword }];
+        }, { password: data.password }];
         console.log("dsdsd" + data)
 
 
@@ -56,8 +53,15 @@ const Register = () => {
         })
             .then(async response => {
                 const data = await response.json();
-                (!response.ok) ? ((response.status == 409) ? alert("user already exists") : alert("oops somthing went wrong... please try again!"))
-                    : goToHome(user[0])
+                if (response.ok)
+                    goToHome(user[0])
+                else
+                    throw new Error(response)
+                //לבדוק ם הבאמת טוב
+            }).catch(response => {
+                (response.status == 409) ?
+                    alert("user already exists") :
+                    alert("oops somthing went wrong... please try again!")
             })
     };
 
@@ -91,8 +95,8 @@ const Register = () => {
                         {...register("name", {
                             required: "name is required.",
                             pattern: {
-                                value: /^[a-zA-Z. ]+$/,
-                                message: "Name is not valid."
+                                // value: /^[a-zA-Z. ]+$/,
+                                // message: "Name is not valid."
                             }
                         })} />
                     {errors.name && <p>{errors.name.message}</p>}
@@ -107,8 +111,8 @@ const Register = () => {
                         {...register("password", {
                             required: "password is required.",
                             pattern: {
-                                value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
-                                message: "password is not valid."
+                                // value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
+                                // message: "password is not valid."
                             }
                         })} />
                     {errors.password ? <p>{errors.password.message}</p> : <br />}
@@ -117,8 +121,8 @@ const Register = () => {
                         {...register("passwordVerification", {
                             required: "password verification is required.",
                             pattern: {
-                                value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
-                                message: "password verification is not valid."
+                                // value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
+                                // message: "password verification is not valid."
                             }
                         })} />
                     {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p> : <br />}
@@ -137,8 +141,8 @@ const Register = () => {
                         {...register("email", {
                             required: "Email is required.",
                             pattern: {
-                                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                                message: "Email is not valid."
+                                // value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                                // message: "Email is not valid."
                             }
                         })} />
                     {errors.email && <p>{errors.email.message}</p>}

@@ -9,6 +9,8 @@ const Comments = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const { postId } = useParams();
     const [comments, setComments] = useState([]);
+    const [isData, setIsData] = useState(false);
+
     const [isAdd, setIsAdd] = useState(false)
 const[isUpdate,setIsUpdate]=useState(-1)
 
@@ -16,7 +18,9 @@ const[isUpdate,setIsUpdate]=useState(-1)
         fetch(`http://localhost:8086/comment?postId=${postId}`)
         .then(async response => {
             const data = await response.json();
+            data.length > 0 ? setIsData(true) : setIsData(false)
             response.ok ?  setComments(data) : alert("notExist")})
+
         }
    
     useEffect(() => {
@@ -43,6 +47,8 @@ const[isUpdate,setIsUpdate]=useState(-1)
             <button onClick={() => setIsAdd(!isAdd)}>add comment</button>
             {isAdd && <AddComment postId={postId} setIsAdd={setIsAdd} getComments={getComments} />}
             <h3>comments for post id {postId}</h3>
+            {isData ? <>
+
             <div className="container">
             {comments.map((comment, index) => <div  className="bubble" key={index}>
                 <p>postId: {comment.postId}</p>
@@ -51,14 +57,14 @@ const[isUpdate,setIsUpdate]=useState(-1)
                 {isUpdate != index ?<>
                 <p>name: {comment.name}</p>
                 <p>body: {comment.body}</p>
-                </>:<UpdateComment setIsUpdate={setIsUpdate} comment={comment} getComments={getComments}/>}
+                </>:<UpdateComment setIsUpdate={setIsUpdate} comment={comment} index={index} setComments={setComments} />}
                 <br />
                 {currentUser.email===comment.email&&<>
                 <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
                 <button disabled={isUpdate === index} onClick={() => remove(comment.id)}><MdDelete /></button>
                 </>}
             </div>)}
-            </div>
+            </div></> : <p>no comments</p>}
 
         </>
     )

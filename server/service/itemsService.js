@@ -41,8 +41,6 @@ export class ItemService {
                 Object.keys(querry).map((key) => {
                     conditionsParams.push(`${key} = ?`)
                     conditionsValues.push(querry[key])
-                    console.log(querry[key])
-                    console.log(key)
                 })
                 queryItem = getItemByParamsQuery(tableName, conditionsParams.join(" AND "))
             }
@@ -64,11 +62,13 @@ export class ItemService {
     }
 
     //לברר האם צריך לבדוק אם קיים פריט
-    async deleteItem(id) {
-        console.log("function delete item")
-        const queryItem = deleteItemQuery(tableName);
-        console.log("query in delete item" + queryItem)
-        const result = await query(queryItem, [id])
+  
+
+    async deleteItem(value,params) {
+        console.log("function delete")
+        const queryItem = deleteItemQuery(tableName,params);
+        console.log("query in delete" + queryItem)
+        const result = await query(queryItem, [value])
         return result;
     }
 

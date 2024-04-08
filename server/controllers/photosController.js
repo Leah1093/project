@@ -22,32 +22,23 @@ export default class PhotosController {
         try {
             const photoService = new ItemService("photo");
             const resultItems = await photoService.getPhotosByPage(req);
-            const hasmorePhotos = await photoService.getnumberOfphoto();
+            const hasMorePhotos = await photoService.getnumberOfphoto();
             let hasMore = true;
-            hasmorePhotos[0].count % 10 == 0 ? (hasmorePhotos[0].count / 10 == req.query.page && (hasMore = false))
-                : ((parseInt(hasmorePhotos[0].count / 10) + 1) == req.query.page && (hasMore = false))
-            if (resultItems.length == 0)
-                throw new Error("No elements found")
+            hasMorePhotos[0].count % 10 == 0 ? (hasMorePhotos[0].count / 10 == req.query.page && (hasMore = false))
+                : ((parseInt(hasMorePhotos[0].count / 10) + 1) == req.query.page && (hasMore = false))
             return res.status(200).json({ data: resultItems, hasMore: hasMore })
         }
         catch (ex) {
             const err = {}
-            switch (err.message) {
-                case "No elements found":
-                    err.statusCode = 500;
-                    break;
-                default:
-                    err.statusCode = 500;
-                    break;
-            }
-            err.message = ex;
-            next(err)
+            err.statusCode = 500;
+            err.message = ex.message;
+            next(err);
         }
     }
 
 
 
-    async addPhoto(req, res) {
+    async addPhoto(req, res,next) {
         console.log("function add photo")
         try {
             console.log("addPhoto" + req.body)
@@ -59,22 +50,22 @@ export default class PhotosController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err);
         }
     }
 
-    async deletePhotoById(req, res) {
+    async deletePhotoById(req, res,next) {
         console.log("function delete photo")
         try {
             const photoService = new ItemService("photo");
-            await photoService.deleteItem(req.params.id);
+            await photoService.deleteItem(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }
@@ -89,7 +80,7 @@ export default class PhotosController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }

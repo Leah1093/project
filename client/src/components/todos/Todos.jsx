@@ -17,6 +17,7 @@ const Todos = () => {
   let [allTodos, setAllTodos] = useState([])
   const [isUpdate, setIsUpdate] = useState(-1);
   const [isAdd, setIsAdd] = useState(false);
+  const [isData, setIsData] = useState(false);
   const [loading, setLoading] = useState(true)
   const getTodos = () => {
     console.log(currentUser.userId)
@@ -25,7 +26,8 @@ const Todos = () => {
         const data = await response.json();
         response.ok && (
           setTodos(data),
-          setAllTodos(data))
+          setAllTodos(data));
+        data.length > 0 ? setIsData(true) : setIsData(false)
       })
   }
 
@@ -50,7 +52,7 @@ const Todos = () => {
     <>
       {
         // !exist ? <AiOutlineLoading3Quarters /> :
-         < >
+        < >
           {
             loading ? <div className={Style.loader}>
               <div className={Style.circle}></div>
@@ -61,21 +63,23 @@ const Todos = () => {
               < >
                 <button onClick={() => setIsAdd(!isAdd)}>add todo</button>
                 {isAdd && <AddTodo setIsAdd={setIsAdd} getTodos={getTodos} />}
-                <div className="todos_container">
-                  <SortTodos todos={todos} setTodos={setTodos} setAllTodos={setAllTodos} />
-                  <SearchTodos setTodos={setTodos} allTodos={allTodos} />
-                  {todos.map((todo, index) =>
-                    <div className="todo_item" key={index}>
-                      {isUpdate != index ? <>
-                        <Todo todo={todo} />
-                      </> :
-                        <UpdateTodo setIsUpdate={setIsUpdate} todo={todo} getTodos={getTodos} />}
-                      <button className='btnUpdate' onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
-                      <button className="btnRemove" disabled={isUpdate === index} onClick={() => remove(todo.id)}><MdDelete /></button>
-                    </div>
-                  )}
-                </div>
+                {isData ? <>
+                  <div className="todos_container">
+                    <SortTodos todos={todos} setTodos={setTodos} setAllTodos={setAllTodos} />
+                    <SearchTodos setTodos={setTodos} allTodos={allTodos} />
+                    {todos.map((todo, index) =>
+                      <div className="todo_item" key={index}>
+                        {isUpdate != index ? <>
+                          <Todo todo={todo} />
+                        </> :
+                          <UpdateTodo setIsUpdate={setIsUpdate} index={index} todo={todo} setAllTodos={setAllTodos} setTodos={setTodos} />}
+                        <button className='btnUpdate' onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
+                        <button className="btnRemove" disabled={isUpdate === index} onClick={() => remove(todo.id)}><MdDelete /></button>
+                      </div>
+                    )}
+                  </div></> : <p>no todos</p>}
               </>}
+
         </>
       }
     </>

@@ -18,7 +18,7 @@ const Login = () => {
     } = useForm();
 
     const goToHome = (data) => {
-        console.log("fdsf  "+data)
+        console.log("fdsf  " + data)
         setCurrentUser({
             userId: data.userId,
             name: data.name,
@@ -29,29 +29,48 @@ const Login = () => {
         localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
         navigate(`/home/user/${data.username}`)
     }
-//צריך לשנות לבקשה אחת
+    //צריך לשנות לבקשה אחת
     const isExist = (name, password) => {
-        fetch(`http://localhost:8086/user?username=${name}`)
+        // fetch(`http://localhost:8086/user?username=${name}`)
+        //     .then(async response => {
+        //         const data = await response.json();
+        //         (data.length==0) ? alert(`${name} does not exist`) :
+        //          fetch(`http://localhost:8086/entrance/login`, {
+        //             method: 'POST',
+        //             body: JSON.stringify({username:name,password:password}),
+        //             headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        //         })
+        //             .then(response => {
+        //                 (response.status!=200) ? alert("oops somthing went wrong... please try again!") : (goToHome(data[0]))
+        //             })
+        //     })
+
+        fetch(`http://localhost:8086/entrance/login`, {
+            method: 'POST',
+            body: JSON.stringify({ username: name, password: password }),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        })
             .then(async response => {
                 const data = await response.json();
-                (data.length==0) ? alert(`${name} does not exist`) :
-                 fetch(`http://localhost:8086/entrance/login`, {
-                    method: 'POST',
-                    body: JSON.stringify({username:name,password:password}),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
-                })
-                    .then(response => {
-                        (response.status!=200) ? alert("oops somthing went wrong... please try again!") : (goToHome(data[0]))
-                    })
+                if (response.ok)
+                    (goToHome(data.data))
+                else
+                    throw (response);
+            }).catch(response => {
+                if (response.status == 500)
+                    alert("oops somthing went wrong... please try again!")
+                else
+                    alert("You are not allowed to enter!")
+
             })
     }
 
     const logIn = (data) => {
-        if ((/^[a-zA-Z.]+$/.test(data.password) === false) || data.password.indexOf('.') === -1) {
-            //לבדוק מה זה
-            // setExist(false)
-            return
-        }
+        // if ((/^[a-zA-Z.]+$/.test(data.password) === false) || data.password.indexOf('.') === -1) {
+        //לבדוק מה זה
+        // setExist(false)
+        // return
+        // }
         isExist(data.username, data.password)
     }
 

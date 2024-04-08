@@ -7,7 +7,7 @@ userRouter.get("/:id",userController.getUsers)
 userRouter.get("/",userController.getUsers);
 userRouter.post("/",userController.addUser);
 userRouter.put("/",userController.editPassword);
-userRouter.delete("/:id",userController.deleteUserById);
+userRouter.delete("/",userController.deleteUserById);
 userRouter.put("/:id",userController.updateUserById);
 
 export {

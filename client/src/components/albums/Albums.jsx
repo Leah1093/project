@@ -9,12 +9,14 @@ const Albums = () => {
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const [exist, setExist] = useState(false);
   const [albums, setAlbums] = useState([]);
+  const [isData, setIsData] = useState(false);
   const [isAdd, setIsAdd] = useState(false)
   let [allAlbums, setAllAlbums] = useState([])
   const getAlbums = () => {
     fetch(`http://localhost:8086/album?userId=${currentUser.userId}`)
       .then(async response => {
         const data = await response.json();
+        data.length > 0 ? setIsData(true) : setIsData(false)
         response.ok ? setExist(true) : setExist(false);
         setAlbums(data);
         setAllAlbums(data)
@@ -30,6 +32,7 @@ const Albums = () => {
       <h1 >Albums</h1>
       <button onClick={() => setIsAdd(!isAdd)}>add album</button>
       {isAdd && <AddAlbum setIsAdd={setIsAdd} getAlbums={getAlbums} />}
+      {isData ? <>
       <div className="albums_container">
         <SearchAlbums setAlbums={setAlbums} allAlbums={allAlbums} albums={albums} />
         {!exist ? <AiOutlineLoading3Quarters /> :
@@ -46,7 +49,7 @@ const Albums = () => {
             </>
             )}
           </div>}
-      </div>
+      </div></> : <p>no albums</p>}
     </>
   )
 }

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const EditPassword = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const [exist, setExist] = useState("");
+    // const MessageBox = require('windowsmessagebox');
     const navigate = useNavigate();
     const {
         register,
@@ -14,6 +15,25 @@ const EditPassword = () => {
         formState: { errors }
     } = useForm();
 
+    const deleteAccount = () => {
+        // let buttons = [
+        //     ["Yes"],
+        //     ["No"]
+        // ]
+        
+        // let clicked  = windowsMessageBox.show("attntion!!", "This is my message!", "info", buttons);
+        
+        // console.log(clicked); // "Yes" if the user clicked on the "Yes" button, "No" if the user clicked on the "No" button
+        fetch(`http://localhost:8086/user?username=${currentUser.username}`, {
+            method: 'DELETE',
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+          })
+            .then(response => {
+              response.ok ?(localStorage.removeItem("currentUser"),window.history.replaceState(null, null, '/'),location.reload()) : alert("oops somthing went wrong... please try again!");
+            })
+
+
+    }
 
     const editPassword = (data) => {
         if (data.newPassword != data.passwordVerification) {
@@ -21,11 +41,10 @@ const EditPassword = () => {
             return
         }
         const password = [{
-            username   : currentUser.username,
-            password : data.password
+            username: currentUser.username,
+            password: data.password
         }, { password: data.newPassword }];
-console.log("pass"+password)
-
+        console.log("pass" + password)
         fetch('http://localhost:8086/user', {
             method: 'PUT',
             body: JSON.stringify(password),
@@ -34,10 +53,10 @@ console.log("pass"+password)
             .then(async response => {
                 const data = await response.json();
                 (!response.ok) ? alert("oops somthing went wrong... please try again!")
-                    : (response.status == 409) ? setExist("fail") :(alert("Your password has been successfully changed"), navigate(`/home/user/${currentUser.username}`))
+                    : (response.status == 409) ? setExist("fail") : (alert("Your password has been successfully changed"), navigate(`/home/user/${currentUser.username}`))
             })
     };
-
+    //לשנות ל user
 
     return (
         <>
@@ -76,6 +95,8 @@ console.log("pass"+password)
 
                 <input type="submit" value="edit" />
             </form>
+
+            <button onClick={deleteAccount}>Delete your account</button>
         </>
     )
 }

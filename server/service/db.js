@@ -16,10 +16,10 @@ async function query(query, params){
         console.log("in try query");
         
         [results] = await connection.execute(query,params);
-         console.log("the result"+results);
+         console.log("the result "+results);
 
     } catch (err) {
-        console.log("in catch query"+err);
+        console.log("in catch query "+err);
     }
     finally {
         connection.end();

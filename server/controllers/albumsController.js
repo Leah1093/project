@@ -7,23 +7,14 @@ export default class AlbumsController {
         try {
             const albumService = new ItemService("album");
             const resultItems = await albumService.getItems(req)
-            if (resultItems.length == 0)
-                throw new Error("No elements found")
             return res.status(200).json(resultItems);
         }
 
         catch (ex) {
             const err = {}
-            switch (err.message) {
-                case "No elements found":
-                    err.statusCode = 500;
-                    break;
-                default:
-                    err.statusCode = 500;
-                    break;
-            }
-            err.message = ex;
-            next(err)
+            err.statusCode = 500;
+            err.message = ex.message;
+            next(err);
         }
     }
 
@@ -39,22 +30,24 @@ export default class AlbumsController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err);
         }
     }
 
-    async deleteAlbumById(req, res) {
+    async deleteAlbumById(req, res,next) {
         console.log("function delete album")
         try {
             const albumService = new ItemService("album");
-            await albumService.deleteItem(req.params.id);
+            await albumService.deleteItem(req.params.id,"id");
+            const photoService = new ItemService("photo");
+            await photoService.deleteItem(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }
@@ -69,7 +62,7 @@ export default class AlbumsController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }

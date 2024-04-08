@@ -3,23 +3,7 @@ import React, { useEffect, useContext } from "react";
 import { UserContext } from '../../App'
 // import Style from './todosStyle.module.css'
 const AddTodo = ({ setIsAdd, getTodos }) => {
-    let id;
     const [currentUser, setCurrentUser] = useContext(UserContext);
-    // useEffect(() => {
-    //     fetch(`http://localhost:3000/nextIds/todos`)
-    //         .then(async response => {
-    //             const data = await response.json();
-    //             if (response.ok) {
-    //                 id = data.nextId;
-    //                 fetch(`http://localhost:3000/nextIds/todos`, {
-    //                     method: 'PATCH',
-    //                     body: JSON.stringify({ nextId: data.nextId + 1 })
-    //                 });
-    //             } else alert("ioufg");
-    //         })
-    // }, [])
-
-
     const addNewTodo = (element) => {
         element.preventDefault();
         const todo = {

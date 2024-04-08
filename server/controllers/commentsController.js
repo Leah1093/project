@@ -5,24 +5,15 @@ export default class CommentsController {
     async getComments(req, res, next) {
         console.log("function get comments")
         try {
-            const todoService = new ItemService("comment");
-            const resultItems = await todoService.getItems(req)
-            if (resultItems.length == 0)
-            throw new Error("No elements found")
+            const commentService = new ItemService("comment");
+            const resultItems = await commentService.getItems(req)
             return res.status(200).json(resultItems);
         }
         catch (ex) {
             const err = {}
-            switch (err.message) {
-                case "No elements found":
-                    err.statusCode = 500;
-                    break;
-                default:
-                    err.statusCode = 500;
-                    break;
-            }
-            err.message = ex;
-            next(err)
+            err.statusCode = 500;
+            err.message = ex.message;
+            next(err);
         }
     }
 
@@ -38,22 +29,22 @@ export default class CommentsController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err);
         }
     }
 
-    async deleteCommentById(req, res) {
+    async deleteCommentById(req, res,next) {
         console.log("function delete comment")
         try {
             const commentService = new ItemService("comment");
-            await commentService.deleteItem(req.params.id);
+            await commentService.deleteItem(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }
@@ -68,7 +59,7 @@ export default class CommentsController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }

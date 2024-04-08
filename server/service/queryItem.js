@@ -23,15 +23,23 @@ function postItemQuery(tableName, repeat) {
 //     return query;
 // }
 
-function deleteItemQuery(tableName) {
-    const query = `UPDATE nodedb.${tableName} SET isActive = 0 WHERE (id = ?)`;
+// function deleteItemQuery(tableName) {
+//     const query = `UPDATE nodedb.${tableName} SET isActive = 0 WHERE (id = ?)`;
+//     return query;
+// }
+
+function deleteItemQuery(tableName,params) {
+    console.log("😊😊😊😊😊😊😊")
+    const query = `UPDATE nodedb.${tableName} SET isActive = 0 WHERE ${params} = ?`;
     return query;
 }
+
 
 function updateItemQuery(tableName, stringToQuery) {
     const query = `UPDATE nodedb.${tableName} SET ${stringToQuery}  WHERE id = ? and isActive`;
     return query;
 }
+
 
 function getPasswordQuery() {
     const query =`SELECT password FROM nodedb.userpassword where id=(select id from nodedb.user where username= ? and isActive)`
@@ -51,6 +59,7 @@ function getNumberOfPhotoQuery(){
 }
 
 export {
+    
     getNumberOfPhotoQuery,
     getAllPhotosQuery,
     getPasswordQuery,

@@ -1,28 +1,19 @@
 import { ItemService } from '../service/itemsService.js';
 export default class PostsController {
 
-    
+
     async getPosts(req, res, next) {
         console.log("function get posts")
         try {
-            const todoService = new ItemService("post");
-            const resultItems = await todoService.getItems(req)
-            if (resultItems.length == 0)
-            throw new Error("No elements found")
+            const postService = new ItemService("post");
+            const resultItems = await postService.getItems(req)
             return res.status(200).json(resultItems);
         }
         catch (ex) {
             const err = {}
-            switch (err.message) {
-                case "No elements found":
-                    err.statusCode = 500;
-                    break;
-                default:
-                    err.statusCode = 500;
-                    break;
-            }
-            err.message = ex;
-            next(err)
+            err.statusCode = 500;
+            err.message = ex.message;
+            next(err);
         }
     }
 
@@ -38,22 +29,24 @@ export default class PostsController {
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
-            // next(err);
+            err.message = ex.message;
+            next(err);
         }
     }
 
-    async deletePostById(req, res) {
+    async deletePostById(req, res,next) {
         console.log("function delete post")
         try {
             const postService = new ItemService("post");
-            await postService.deleteItem(req.params.id);
+            await postService.deleteItem(req.params.id,"id");
+            const commentService = new ItemService("comment");
+            await commentService.deleteItem(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }
@@ -62,13 +55,13 @@ export default class PostsController {
         console.log("function update post")
         try {
             const postService = new ItemService("post");
-            await postService.updateItem(req.body,req.params.id);
+            await postService.updateItem(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
             const err = {}
             err.statusCode = 500;
-            err.message = ex;
+            err.message = ex.message;
             next(err)
         }
     }
