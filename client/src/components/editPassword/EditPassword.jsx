@@ -31,8 +31,6 @@ const EditPassword = () => {
             .then(response => {
               response.ok ?(localStorage.removeItem("currentUser"),window.history.replaceState(null, null, '/'),location.reload()) : alert("oops somthing went wrong... please try again!");
             })
-
-
     }
 
     const editPassword = (data) => {

@@ -1,10 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import { UserContext } from '../../App'
+import { fetchPost } from "../fetch.js";
+
 import './posts.css'
 
 const AddPost = ({ setIsAdd, getPosts }) => {
+   
    const [currentUser, setCurrentUser] = useContext(UserContext);
-   let id;
    const addNewPost = (element) => {
       element.preventDefault();
       const post = {
@@ -12,16 +14,7 @@ const AddPost = ({ setIsAdd, getPosts }) => {
          title: element.target[0].value,
          body:element.target[1].value
       }
-      console.log(post);
-
-      fetch(`http://localhost:8086/post`, {
-         method: 'POST',
-         body: JSON.stringify(post),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-      }).then(response => {
-         response.ok ?(setIsAdd(false), getPosts()) : alert("oops somthing went wrong... please try again!")
-      })
-     
+      fetchPost(`post`, post, getPosts, setIsAdd)
    }
 
 

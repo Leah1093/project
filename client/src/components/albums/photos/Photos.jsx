@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import AddPhoto from "./AddPhoto";
 import UpdatePhoto from "./UpdetePhoto";
 import { MdDelete, MdModeEdit } from "react-icons/md";
+import {fetchDelete } from "../../fetch";
 import './photo.css'
 
 const Photos = () => {
@@ -39,12 +40,7 @@ const Photos = () => {
   }, [])
 
   const remove = (id,i) => {
-    fetch(`http://localhost:8086/photo/${id}`, {
-      method: 'DELETE'
-    })
-      .then(response => {
-        response.ok ? setItems((prev => [...prev.slice(0,i),...prev.slice(i+1)])) : alert("oops somthing went wrong... please try again!");
-      })
+    fetchDelete(`photo/${id}`, setItems, setItems, i)
   }
 
   return (
@@ -52,8 +48,7 @@ const Photos = () => {
       <h1>photos</h1>
       <h3> album:{album.id} {album.title}</h3>
       <button onClick={() => setIsAdd(!isAdd)}>add photo</button>
-      {isAdd && <AddPhoto albumId={album.id} setIsAdd={setIsAdd} />}
-
+      {isAdd && <AddPhoto setItems={setItems} albumId={album.id} setIsAdd={setIsAdd} />}
       <InfiniteScroll
         loadMore={getPhotos}
         hasMore={hasMore}

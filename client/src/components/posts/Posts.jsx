@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import UpdatePost from "./UpdatePost";
 import Style from '../loader.module.css'
 import { UserContext } from '../../App'
+import { fetchGet, fetchDelete } from "../fetch";
 import './posts.css'
 import AddPost from "./AddPost";
+
 const Posts = () => {
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const [posts, setPosts] = useState([]);
@@ -19,12 +21,7 @@ const Posts = () => {
   const [isUpdate, setIsUpdate] = useState(-1);
   const [loading, setLoading] = useState(true)
   const getPosts = () => {
-    fetch(`http://localhost:8086/post`)
-      .then(async response => {
-        const data = await response.json();
-        data.length > 0 ? setIsData(true) : setIsData(false)
-        response.ok ? (setPosts(data), setAllPosts(data)) : alert("oops somthing went wrong...")
-      })
+    fetchGet(`post`, setPosts, setAllPosts, setIsData);
   }
 
   useEffect(() => {
@@ -36,15 +33,8 @@ const Posts = () => {
   }, [currentUser])
 
 
-  const remove = (id,i) => {
-    fetch(`http://localhost:8086/post/${id}`, {
-      method: 'DELETE',
-      headers: { 'Content-type': 'application/json; charset=UTF-8' }
-
-    })
-      .then(response => {
-        response.ok ? (setPosts((prev => [...prev.slice(0,i),...prev.slice(i+1)])),setAllPosts((prev => [...prev.slice(0,i),...prev.slice(i+1)]))) : alert("oops somthing went wrong... please try again!");
-      })
+  const remove = (id, i) => {
+    fetchDelete(`post/${id}`, setPosts, setAllPosts, i)
   }
 
   return (
@@ -67,15 +57,15 @@ const Posts = () => {
                 <span>ID: {post.id}</span>
                 {(isUpdate != index) ? <>
                   <span>TITLE: {post.title}</span>
-                </> : <UpdatePost setIsUpdate={setIsUpdate} index={index} post={post}  setAllPosts={setAllPosts} setPosts={setPosts} />}
-               {showBody === index && <>
+                </> : <UpdatePost setIsUpdate={setIsUpdate} index={index} post={post} setAllPosts={setAllPosts} setPosts={setPosts} />}
+                {showBody === index && <>
                   <span>BODY: {post.body}</span>
                   {post.userId == currentUser.userId && <button onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>}
                   <Link to={`./${post.id}/comment`}>comments</Link>
                 </>
                 }
                 <button className="btmShowBody" onClick={() => setShowBody(prevShowBody => prevShowBody === index ? -1 : index)}> {showBody === index ? <FaEyeSlash /> : <FaEye />}</button>
-                {post.userId == currentUser.userId && <button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id,index)}><MdDelete /></button>}
+                {post.userId == currentUser.userId && <button className="btnRemovePost" disabled={isUpdate === index} onClick={() => remove(post.id, index)}><MdDelete /></button>}
               </div>
             )}
           </> : <p>no posts</p>}</>}

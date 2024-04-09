@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
-import { UserContext } from '../../App'
+import { UserContext } from '../../App';
+import { fetchPost } from "../fetch";
 import './album.css'
 
 const AddAlbum = ({ setIsAdd, getAlbums }) => {
@@ -9,19 +10,9 @@ const AddAlbum = ({ setIsAdd, getAlbums }) => {
       element.preventDefault();
       const album = {
          userId: currentUser.userId,
-         // id: id.toString(),
          title: element.target[0].value,
       }
-      console.log(album);
-
-      fetch(`http://localhost:8086/album`, {
-         method: 'POST',
-         body: JSON.stringify(album),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-      }).then(response => {
-         response.ok ?(setIsAdd(false), getAlbums()) : alert("oops somthing went wrong... please try again!")
-      })
-     
+      fetchPost(`album`, album, getAlbums, setIsAdd)     
    }
 
 

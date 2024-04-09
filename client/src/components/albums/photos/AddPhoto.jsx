@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-const AddPhoto = ({ albumId, setIsAdd }) => {
+const AddPhoto = ({ setItems,albumId, setIsAdd }) => {
    let id;
    const addNewPhoto = (element) => {
       element.preventDefault();
@@ -9,15 +9,17 @@ const AddPhoto = ({ albumId, setIsAdd }) => {
          url: element.target[1].value,
          thumbnailUrl: element.target[2].value
       }
-      console.log(photo);
 
-      fetch(`http://localhost:8086/photo`, {
-         method: 'POST',
-         body: JSON.stringify(photo),
-         headers: { 'Content-type': 'application/json; charset=UTF-8' }
-      }).then(response => {
-         response.ok ? setIsAdd(false) : alert("oops somthing went wrong... please try again!")
-      })
+
+      fetchPost(`photo`, photo, setItems, setIsAdd)
+
+      // fetch(`http://localhost:8086/photo`, {
+      //    method: 'POST',
+      //    body: JSON.stringify(photo),
+      //    headers: { 'Content-type': 'application/json; charset=UTF-8' }
+      // }).then(response => {
+      //    response.ok ? setIsAdd(false) : alert("oops somthing went wrong... please try again!")
+      // })
 
       window.location.reload();//לבדוק אם יש אפשרות לשנות
    }

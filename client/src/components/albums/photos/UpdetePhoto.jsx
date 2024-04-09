@@ -1,17 +1,13 @@
 import React from "react";
-
+import { fetchPut } from "../../fetch";
 const UpdatePhoto = ({ photo,index,setPhotos,setItems, setIsUpdate }) => {
     const updatePhoto = (element) => {
         element.preventDefault()
         const newPhoto = { id: photo.id, albumId: photo.albumId,title: element.target[0].value, url: element.target[1].value, thumbnailUrl: element.target[2].value }
-
-        fetch(`http://localhost:8086/photo/${photo.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ title: element.target[0].value, url: element.target[1].value, thumbnailUrl: element.target[2].value }),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        }).then(response => {
-            response.ok ? (setItems((prev)=>updatePhotos(newPhoto,prev)) , setIsUpdate(-1), window.location.reload()) : alert("oops somthing went wrong... please try again!")
-        });
+        const updatePhoto= { title: element.target[0].value, url: element.target[1].value, thumbnailUrl: element.target[2].value }
+        setIsUpdate(-1)
+        fetchPut(`post/${post.id}`, newPhoto, updatePhoto, setItems, setItems, updatePhotos)
+//אולי צריך גם window.location.reload()
     }
 
     const updatePhotos = (photo, prev) => {

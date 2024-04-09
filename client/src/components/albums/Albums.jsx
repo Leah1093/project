@@ -3,6 +3,7 @@ import SearchAlbums from "./SearchAlbums";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddAlbum from "./AddAlbum";
 import { Link } from "react-router-dom";
+import { fetchGet } from "../fetch";
 import { UserContext } from '../../App'
 
 const Albums = () => {
@@ -13,14 +14,7 @@ const Albums = () => {
   const [isAdd, setIsAdd] = useState(false)
   let [allAlbums, setAllAlbums] = useState([])
   const getAlbums = () => {
-    fetch(`http://localhost:8086/album?userId=${currentUser.userId}`)
-      .then(async response => {
-        const data = await response.json();
-        data.length > 0 ? setIsData(true) : setIsData(false)
-        response.ok ? setExist(true) : setExist(false);
-        setAlbums(data);
-        setAllAlbums(data)
-      })
+    fetchGet(`album?userId=${currentUser.userId}`, setAlbums, setAllAlbums, setIsData);
   }
 
   useEffect(() => {
@@ -33,9 +27,8 @@ const Albums = () => {
       <button onClick={() => setIsAdd(!isAdd)}>add album</button>
       {isAdd && <AddAlbum setIsAdd={setIsAdd} getAlbums={getAlbums} />}
       {isData ? <>
-      <div className="albums_container">
-        <SearchAlbums setAlbums={setAlbums} allAlbums={allAlbums} albums={albums} />
-        {!exist ? <AiOutlineLoading3Quarters /> :
+        <div className="albums_container">
+          <SearchAlbums setAlbums={setAlbums} allAlbums={allAlbums} albums={albums} />
           <div className="album-list" >
             {albums.map((album, index) => <>
               <div key={index} className="album album_item">
@@ -48,8 +41,8 @@ const Albums = () => {
               </div>
             </>
             )}
-          </div>}
-      </div></> : <p>no albums</p>}
+          </div>
+        </div></> : <p>no albums</p>}
     </>
   )
 }

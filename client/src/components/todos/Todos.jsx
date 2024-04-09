@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddTodo from './AddTodo'
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import UpdateTodo from "./UpdateTodo";
@@ -7,8 +6,9 @@ import SortTodos from "./SortTodos";
 import SearchTodos from "./SearchTodos";
 import { UserContext } from "../../App";
 import Todo from "./Todo";
-import './todosStyle.css'
 import Style from "../loader.module.css"
+import { fetchGet, fetchDelete } from "../fetch.js";
+import './todosStyle.css'
 const Todos = () => {
 
   const [currentUser, setCurrentUser] = useContext(UserContext);
@@ -19,18 +19,7 @@ const Todos = () => {
   const [isAdd, setIsAdd] = useState(false);
   const [isData, setIsData] = useState(false);
   const [loading, setLoading] = useState(true)
-  const getTodos = () => {
-    console.log(currentUser.userId)
-    fetch(`http://localhost:8086/todo?userId=${currentUser.userId}`)
-      .then(async response => {
-        const data = await response.json();
-        response.ok && (
-          setTodos(data),
-          setAllTodos(data));
-        data.length > 0 ? setIsData(true) : setIsData(false)
-      })
-  }
-
+  
   useEffect(() => {
     getTodos()
     setTimeout(() => {
@@ -38,20 +27,17 @@ const Todos = () => {
     }, 1000);
   }, [currentUser])
 
-  const remove = (todoId) => {
-    fetch(`http://localhost:8086/todo/${todoId}`, {
-      method: 'DELETE',
-      headers: { 'Content-type': 'application/json; charset=UTF-8' }
-    })
-      .then(response => {
-        response.ok ? getTodos() : alert("oops somthing went wrong... please try again!");
-      })
+  const getTodos = () => {
+    fetchGet(`todo?userId=${currentUser.userId}`, setTodos, setAllTodos, setIsData);
+  }
+  
+  const remove = (todoId, i) => {
+    fetchDelete(`todo/${todoId}`, setTodos, setAllTodos, i)
   }
 
   return (
     <>
       {
-        // !exist ? <AiOutlineLoading3Quarters /> :
         < >
           {
             loading ? <div className={Style.loader}>
@@ -74,12 +60,11 @@ const Todos = () => {
                         </> :
                           <UpdateTodo setIsUpdate={setIsUpdate} index={index} todo={todo} setAllTodos={setAllTodos} setTodos={setTodos} />}
                         <button className='btnUpdate' onClick={() => setIsUpdate(prevIsUpdate => prevIsUpdate === -1 ? index : -1)}><MdModeEdit /></button>
-                        <button className="btnRemove" disabled={isUpdate === index} onClick={() => remove(todo.id)}><MdDelete /></button>
+                        <button className="btnRemove" disabled={isUpdate === index} onClick={() => remove(todo.id, index)}><MdDelete /></button>
                       </div>
                     )}
                   </div></> : <p>no todos</p>}
               </>}
-
         </>
       }
     </>

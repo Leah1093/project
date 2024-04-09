@@ -1,16 +1,14 @@
 import React from "react";
+import { fetchPut } from "../fetch";
+
 const UpdateTodo = ({ todo, index, setTodos, setAllTodos, setIsUpdate }) => {
 
     const updateTodo = (element) => {
-        const newTodo = { id: todo.id, userId: todo.userId, title: element.target[1].value, completed: element.target[0].checked }
         element.preventDefault()
-        fetch(`http://localhost:8086/todo/${todo.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ title: element.target[1].value, completed: element.target[0].checked }),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        }).then(response => {
-            response.ok ? (setTodos((prev)=>updateTodos(newTodo,prev)),setAllTodos((prev)=>updateTodos(newTodo,prev)), setIsUpdate(-1)) : alert("oops somthing went wrong... please try again!")
-        });
+        const newTodo = { id: todo.id, userId: todo.userId, title: element.target[1].value, completed: element.target[0].checked }
+        const updateTodo = { title: element.target[1].value, completed: element.target[0].checked };  
+        setIsUpdate(-1)
+        fetchPut(`todo/${todo.id}`, newTodo, updateTodo, setTodos, setAllTodos, updateTodos)
     }
 
     const updateTodos = (todo, prev) => {
