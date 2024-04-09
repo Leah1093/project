@@ -10,7 +10,7 @@ const Register = () => {
     const [exist, setExist] = useState("");
     // const [input, setInput] = useState({ name: "", password: "" })
     const [currentUser, setCurrentUser] = useContext(UserContext);
-    const goToHome = (data) => {
+    const goToHome = (data,dataToken) => {
         setCurrentUser({
             userId: data.userId,
             name: data.name,
@@ -18,7 +18,7 @@ const Register = () => {
             email: data.email,
             phone: data.phone
         })
-        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
+        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId,token:dataToken }));
         navigate(`/home/user/${data.username}`)
     }
 
@@ -46,7 +46,7 @@ const Register = () => {
         console.log("dsdsd" + data)
 
 
-        fetch('http://localhost:8086/user', {
+        fetch('http://localhost:8086/entrance/register', {
             method: 'POST',
             body: JSON.stringify(user),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -54,7 +54,7 @@ const Register = () => {
             .then(async response => {
                 const data = await response.json();
                 if (response.ok)
-                    goToHome(user[0])
+                    goToHome(user[0],data.token)
                 else
                     throw new Error(response)
                 //לבדוק ם הבאמת טוב

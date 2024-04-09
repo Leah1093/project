@@ -26,10 +26,16 @@ function App() {
       phone: data.phone
     }
   }
+ 
 
   useEffect(() => {
     const currntUser = JSON.parse(localStorage.getItem("currentUser"))
-    currntUser && fetch(`http://localhost:8086/user?username=${currntUser.username}`)
+    currntUser && fetch(`http://localhost:8086/user?username=${currntUser.username}`,{
+      headers: {
+        Authorization: currntUser.token.token
+      }
+    
+  })
       .then(async response => {
         const data = await response.json();
         response.ok && setCurrentUser(() => user(data[0]))

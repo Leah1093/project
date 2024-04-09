@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { query } from './db.js'
-import { getAllItemsQuery, postItemQuery, getAllPhotosQuery, getNumberOfPhotoQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
+import { getAllItemsQuery, postItemQuery, getItemsByPageQuery, getCountOfItemsQuery, deleteItemQuery, updateItemQuery, getItemByParamsQuery, getPasswordQuery } from './queryItem.js'
 let tableName;
 export class ItemService {
 
@@ -8,19 +8,19 @@ export class ItemService {
         console.log(`the table name is: ${name}`)
         tableName = name;
     }
-    //אולי לשנות לגנרי
-    async getnumberOfphoto() {
+
+    async getCountOfItems() {
         let queryItem;
-        queryItem = getNumberOfPhotoQuery();
+        queryItem = getCountOfItemsQuery(tableName);
         console.log("query in get item " + queryItem);
         const result = await query(queryItem);
         return result;
     }
-    //אולי לשנות לגנרי
-    async getPhotosByPage(req) {
+  
+    async getItemsByPage(req) {
         let queryItem;
         let offset = (req.query.page - 1) * 10;
-        queryItem = getAllPhotosQuery(`OFFSET ${offset}`)
+        queryItem = getItemsByPageQuery(tableName,`OFFSET ${offset}`)
         console.log("query in get item " + queryItem);
         const result = await query(queryItem, [req.query.albumId]);
         return result;
@@ -50,19 +50,16 @@ export class ItemService {
         return result;
     }
 
-
-
     async postItem(body) {
         console.log("function post item")
         let queryItem;
+        console.log("😅😅h")
+        console.log(Object.values(body))
         queryItem = postItemQuery(tableName, tableName != "userpassword" ? "NULL," + "?,".repeat(Object.keys(body).length - 1) + "?" : "?,".repeat(Object.keys(body).length - 1) + "?")
         console.log("query in post item" + queryItem + Object.values(body))
         const result = await query(queryItem, Object.values(body));
         return result;
     }
-
-    //לברר האם צריך לבדוק אם קיים פריט
-  
 
     async deleteItem(value,params) {
         console.log("function delete")

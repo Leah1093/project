@@ -7,29 +7,20 @@ import { useNavigate } from 'react-router-dom';
 const EditPassword = () => {
     const [currentUser, setCurrentUser] = useContext(UserContext);
     const [exist, setExist] = useState("");
-    // const MessageBox = require('windowsmessagebox');
     const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm();
-
+    const currntUser = JSON.parse(localStorage.getItem("currentUser"))
     const deleteAccount = () => {
-        // let buttons = [
-        //     ["Yes"],
-        //     ["No"]
-        // ]
-        
-        // let clicked  = windowsMessageBox.show("attntion!!", "This is my message!", "info", buttons);
-        
-        // console.log(clicked); // "Yes" if the user clicked on the "Yes" button, "No" if the user clicked on the "No" button
         fetch(`http://localhost:8086/user?username=${currentUser.username}`, {
             method: 'DELETE',
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-          })
+            headers: { Authorization: currntUser.token.token, 'Content-type': 'application/json; charset=UTF-8' }
+        })
             .then(response => {
-              response.ok ?(localStorage.removeItem("currentUser"),window.history.replaceState(null, null, '/'),location.reload()) : alert("oops somthing went wrong... please try again!");
+                response.ok ? (localStorage.removeItem("currentUser"), window.history.replaceState(null, null, '/'), location.reload()) : alert("oops somthing went wrong... please try again!");
             })
     }
 
@@ -42,11 +33,10 @@ const EditPassword = () => {
             username: currentUser.username,
             password: data.password
         }, { password: data.newPassword }];
-        console.log("pass" + password)
         fetch('http://localhost:8086/user', {
             method: 'PUT',
             body: JSON.stringify(password),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            headers: { Authorization: currntUser.token.token, 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(async response => {
                 const data = await response.json();
@@ -65,8 +55,8 @@ const EditPassword = () => {
                     {...register("password", {
                         required: "password is required.",
                         pattern: {
-                            value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
-                            message: "password is not valid."
+                            // value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
+                            // message: "password is not valid."
                         }
                     })} />
                 {errors.password ? <p>{errors.password.message}</p> : <br />}
@@ -75,8 +65,8 @@ const EditPassword = () => {
                     {...register("newPassword", {
                         required: "new password is required.",
                         pattern: {
-                            value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
-                            message: "password is not valid."
+                            // value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
+                            // message: "password is not valid."
                         }
                     })} />
                 {errors.newPassword ? <p>{errors.newPassword.message}</p> : <br />}
@@ -85,8 +75,8 @@ const EditPassword = () => {
                     {...register("passwordVerification", {
                         required: "password verification is required.",
                         pattern: {
-                            value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
-                            message: "password verification is not valid."
+                            // value: /^[a-zA-Z]+[.]+[a-zA-Z ]+$/,
+                            // message: "password verification is not valid."
                         }
                     })} />
                 {errors.passwordVerification ? <p>{errors.passwordVerification.message}</p> : <br />}

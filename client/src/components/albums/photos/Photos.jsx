@@ -19,9 +19,11 @@ const Photos = () => {
   const [isData, setIsData] = useState(false);
   const location = useLocation()
   const album = location.state
-
+  const currntUser = JSON.parse(localStorage.getItem("currentUser"))
   const getPhotos = () => {
-    hasMore && fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&page=${page}`)
+    hasMore && fetch(`http://localhost:8086/photo?albumId=${parseInt(albumId)}&&page=${page}`,{
+      headers: { Authorization: currntUser.token.token }
+    })
       .then(async response => {
         const data = await response.json();
         data.data.length > 0 ? setIsData(true) : setIsData(false)
@@ -29,6 +31,7 @@ const Photos = () => {
           (page != 1) ? setItems(prevItems => [...prevItems, ...(data.data)]) : (setItems(data.data));
           setPage(page + 1);
           setHasMore(data.hasMore);
+          data.data.length == 0 &&  setHasMore(false);
         }
       })
   };

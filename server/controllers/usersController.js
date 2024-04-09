@@ -14,7 +14,7 @@ export default class UsersController {
                 const resultGetItem = await userServicee.getItems(signedUp);
                 const userPasswordService = new ItemService("userpassword");
                 const resultAddPassword = await userPasswordService.postItem({ id: resultGetItem[0].id, password: sha256(req.body[1].password) });
-                return res.status(200).json({ status: 200 });
+                return res.status(200).json({ token:{ token }, status: 200 });
             } else
                 throw new Error("Element already exists")
         }
@@ -73,8 +73,8 @@ export default class UsersController {
             if (resultGetItems.length != 0) {
                 const userPasswordService = new ItemService("userpassword");
                 const resultAddPassword = await userPasswordService.getItems({ query: null, params: { id: resultGetItems[0].id } });
-                if (resultAddPassword[0].password == req.body[0].password) {
-                    const editPassword = await userPasswordService.updateItem({ password: req.body[1].password }, resultGetItems[0].id);
+                if (resultAddPassword[0].password == sha256(req.body[0].password)) {
+                    const editPassword = await userPasswordService.updateItem({ password: sha256(req.body[1].password) }, resultGetItems[0].id);
                     return res.status(200).json({ status: 200 });
                 }
                 else {

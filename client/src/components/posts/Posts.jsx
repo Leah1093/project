@@ -16,7 +16,7 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [showBody, setShowBody] = useState(-1)
   const [isAdd, setIsAdd] = useState(false)
-  let [allPosts, setAllPosts] = useState([])
+  const [allPosts, setAllPosts] = useState([])
   const [isData, setIsData] = useState(false);
   const [isUpdate, setIsUpdate] = useState(-1);
   const [loading, setLoading] = useState(true)
@@ -29,9 +29,7 @@ const Posts = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-
   }, [currentUser])
-
 
   const remove = (id, i) => {
     fetchDelete(`post/${id}`, setPosts, setAllPosts, i)
@@ -43,7 +41,6 @@ const Posts = () => {
       <button onClick={() => setIsAdd(!isAdd)}>add post</button>
       {isAdd && <AddPost setIsAdd={setIsAdd} getPosts={getPosts} />}
       <div className="posts_container">
-
         {loading ? <div className={Style.loader}>
           <div className={Style.circle}></div>
           <div className={Style.circle}></div>

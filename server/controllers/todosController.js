@@ -17,10 +17,12 @@ export default class TodosController {
     }
 
     async addTodo(req, res,next) {
-        console.log("function add todo")
+        console.log("function add todo") 
+        console.log("😅  "+req.body.title)
         try {
             const todoService = new ItemService("todo");
             await todoService.postItem(req.body);
+           
             return res.status(200).json({ status: 200 });
         }
         catch (ex) {

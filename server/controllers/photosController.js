@@ -21,8 +21,8 @@ export default class PhotosController {
         console.log("function get photos with page");
         try {
             const photoService = new ItemService("photo");
-            const resultItems = await photoService.getPhotosByPage(req);
-            const hasMorePhotos = await photoService.getnumberOfphoto();
+            const resultItems = await photoService.getItemsByPage(req);
+            const hasMorePhotos = await photoService.getCountOfItems();
             let hasMore = true;
             hasMorePhotos[0].count % 10 == 0 ? (hasMorePhotos[0].count / 10 == req.query.page && (hasMore = false))
                 : ((parseInt(hasMorePhotos[0].count / 10) + 1) == req.query.page && (hasMore = false))
@@ -35,8 +35,6 @@ export default class PhotosController {
             next(err);
         }
     }
-
-
 
     async addPhoto(req, res,next) {
         console.log("function add photo")

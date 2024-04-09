@@ -5,8 +5,6 @@ function getAllItemsQuery(tableName) {
     return query;
 }
 
-
-
 function getItemByParamsQuery(tableName,whereConditions) {
     const query = `select * from nodedb.${tableName} where ${whereConditions} and isActive`;
     return query;
@@ -17,23 +15,10 @@ function postItemQuery(tableName, repeat) {
     return query;
 }
 
-// function registerQuery(tableName, repeat) {
-//     const query = ` INSERT INTO nodedb.user VALUES (NULL,?, ?, ?, ?, ?,true);
-//     INSERT INTO nodedb.userpassword  VALUES ((SELECT id FROM nodedb.user where username="qqq"), ?)`;
-//     return query;
-// }
-
-// function deleteItemQuery(tableName) {
-//     const query = `UPDATE nodedb.${tableName} SET isActive = 0 WHERE (id = ?)`;
-//     return query;
-// }
-
 function deleteItemQuery(tableName,params) {
-    console.log("😊😊😊😊😊😊😊")
     const query = `UPDATE nodedb.${tableName} SET isActive = 0 WHERE ${params} = ?`;
     return query;
 }
-
 
 function updateItemQuery(tableName, stringToQuery) {
     const query = `UPDATE nodedb.${tableName} SET ${stringToQuery}  WHERE id = ? and isActive`;
@@ -48,20 +33,19 @@ function getPasswordQuery() {
 
 
 
-function getAllPhotosQuery(offset) {
-    const query = `SELECT * FROM nodedb.photo where albumId=? and isActive LIMIT 10  ${offset} `;
+function getItemsByPageQuery(tableName,offset) {
+    const query = `SELECT * FROM nodedb.${tableName} where albumId=? and isActive LIMIT 10  ${offset} `;
     return query;
 }
 
-function getNumberOfPhotoQuery(){
-    const query=`select count(id) as count from nodedb.photo`
+function getCountOfItemsQuery(tableName){
+    const query=`select count(id) as count from nodedb.${tableName}`
     return query;
 }
 
 export {
-    
-    getNumberOfPhotoQuery,
-    getAllPhotosQuery,
+    getCountOfItemsQuery,
+    getItemsByPageQuery,
     getPasswordQuery,
     getAllItemsQuery,
     postItemQuery,

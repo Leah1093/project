@@ -17,8 +17,7 @@ const Login = () => {
         formState: { errors }
     } = useForm();
 
-    const goToHome = (data) => {
-        console.log("fdsf  " + data)
+    const goToHome = (data,token_) => {
         setCurrentUser({
             userId: data.userId,
             name: data.name,
@@ -26,7 +25,7 @@ const Login = () => {
             email: data.email,
             phone: data.phone
         })
-        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId }));
+        localStorage.setItem('currentUser', JSON.stringify({ username: data.username, userId: data.userId ,token:token_}));
         navigate(`/home/user/${data.username}`)
     }
     //צריך לשנות לבקשה אחת
@@ -53,7 +52,7 @@ const Login = () => {
             .then(async response => {
                 const data = await response.json();
                 if (response.ok)
-                    (goToHome(data.data))
+                    (goToHome(data.data,data.token))
                 else
                     throw (response);
             }).catch(response => {
