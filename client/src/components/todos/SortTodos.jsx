@@ -33,17 +33,17 @@ const SortTodos = ({ todos, setTodos, setAllTodos }) => {
     }
     return (
         <>
-           
-                <Select
-                    menuPlacement="auto"
-                    menuPosition="fixed"
-                    isClearable
-                    placeholder='Sort todos by...'
-                    onChange={(e) => sortByCategory(e)}
-                    options={categories}
-                    getOptionLabel={(categories) => categories["label"]}
-                    getOptionValue={(categories) => categories["value"]} />
-           
+
+            <Select
+                menuPlacement="auto"
+                menuPosition="fixed"
+                isClearable
+                placeholder='Sort todos by...'
+                onChange={(e) => sortByCategory(e)}
+                options={categories}
+                getOptionLabel={(categories) => categories["label"]}
+                getOptionValue={(categories) => categories["value"]} />
+
         </>
     )
 }

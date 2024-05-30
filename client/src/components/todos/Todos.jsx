@@ -10,11 +10,9 @@ import Style from "../loader.module.css"
 import { fetchGet, fetchDelete } from "../fetch.js";
 import './todosStyle.css'
 const Todos = () => {
-
   const [currentUser, setCurrentUser] = useContext(UserContext);
-  const [exist, setExist] = useState(false);
   const [todos, setTodos] = useState([]);
-  let [allTodos, setAllTodos] = useState([])
+  const [allTodos, setAllTodos] = useState([])
   const [isUpdate, setIsUpdate] = useState(-1);
   const [isAdd, setIsAdd] = useState(false);
   const [isData, setIsData] = useState(false);

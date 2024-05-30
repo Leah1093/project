@@ -38,7 +38,7 @@ const SearchTodos = ({ setTodos, allTodos }) => {
         element.target.reset()
         let tempSelectedTodos = [];
         allTodos.forEach((todo) => {
-            if (((values[0].value != "") ? todo.id.toString()=== values[0].value : true)
+            if (((values[0].value != "") ? todo.id.toString() === values[0].value : true)
                 && ((values[1].value != "") ? todo.title === values[1].value : true)
                 && ((values[2].value != null) ? todo.completed === values[2].value : true)
             ) {
@@ -49,31 +49,27 @@ const SearchTodos = ({ setTodos, allTodos }) => {
     }
 
 
-
-
-
-
     return (<>
 
-            <Select
-                menuPlacement="auto"
-                menuPosition="fixed"
-                placeholder='Search todos by...'
-                components={animatecomponent}
-                onChange={(e) => selectOption(e)}
-                options={search}
-                isMulti
-                getOptionLabel={(search) => search["label"]}
-                getOptionValue={(search) => search["value"]} />
+        <Select
+            menuPlacement="auto"
+            menuPosition="fixed"
+            placeholder='Search todos by...'
+            components={animatecomponent}
+            onChange={(e) => selectOption(e)}
+            options={search}
+            isMulti
+            getOptionLabel={(search) => search["label"]}
+            getOptionValue={(search) => search["value"]} />
 
-            {searchValues.length ?
-                <form onSubmit={searchByOption}>
-                    {searchValues.map((value, index) =>
-                        <input key={index} name={value.label} placeholder={value.label} />)}
-                    <button type="submit"><FaSearch /></button>
-                </form> : null}
-        </>)
+        {searchValues.length ?
+            <form onSubmit={searchByOption}>
+                {searchValues.map((value, index) =>
+                    <input key={index} name={value.label} placeholder={value.label} />)}
+                <button type="submit"><FaSearch /></button>
+            </form> : null}
+    </>)
 }
 
 
-        export default SearchTodos
+export default SearchTodos

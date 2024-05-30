@@ -1,13 +1,13 @@
-import { ItemService } from '../service/itemsService.js';
+import { AlbumService } from '../service/albumService.js';
 export default class AlbumsController {
 
 
     async getAlbums(req, res, next) {
         console.log("function get albums")
         try {
-            const albumService = new ItemService("album");
-            const resultItems = await albumService.getItems(req)
-            return res.status(200).json(resultItems);
+            const albumService = new AlbumService();
+            const resultAlbums = await albumService.getAlbums(req)
+            return res.status(200).json(resultAlbums);
         }
 
         catch (ex) {
@@ -21,9 +21,9 @@ export default class AlbumsController {
     async addAlbum(req, res) {
         console.log("function add album")
         try {
-            const albumService = new ItemService("album");
+            const albumService = new AlbumService();
             console.log(req.body)
-            await albumService.postItem(req.body);
+            await albumService.postAlbum(req.body);
 
             return res.status(200).json({ status: 200 });
         }
@@ -38,10 +38,10 @@ export default class AlbumsController {
     async deleteAlbumById(req, res,next) {
         console.log("function delete album")
         try {
-            const albumService = new ItemService("album");
-            await albumService.deleteItem(req.params.id,"id");
-            const photoService = new ItemService("photo");
-            await photoService.deleteItem(req.params.id,"id");
+            const albumService = new AlbumService();
+            await albumService.deleteAlbum(req.params.id,"id");
+            const photoService = new AlbumService("photo");
+            await photoService.deleteAlbum(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
@@ -55,8 +55,8 @@ export default class AlbumsController {
     async updateAlbumById(req, res) {
         console.log("function update album")
         try {
-            const albumService = new ItemService("album");
-            await albumService.updateItem(req.body, req.params.id);
+            const albumService = new AlbumService();
+            await albumService.updateAlbum(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

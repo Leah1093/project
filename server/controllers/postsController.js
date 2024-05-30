@@ -1,13 +1,13 @@
-import { ItemService } from '../service/itemsService.js';
+import { PostService } from '../service/postService.js';
 export default class PostsController {
 
 
     async getPosts(req, res, next) {
         console.log("function get posts")
         try {
-            const postService = new ItemService("post");
-            const resultItems = await postService.getItems(req)
-            return res.status(200).json(resultItems);
+            const postService = new PostService();
+            const resultPosts = await postService.getPosts(req)
+            return res.status(200).json(resultPosts);
         }
         catch (ex) {
             const err = {}
@@ -20,9 +20,9 @@ export default class PostsController {
     async addPost(req, res) {
         console.log("function add post")
         try {
-            const postService = new ItemService("post");
+            const postService = new PostService();
             console.log(req.body)
-            await postService.postItem(req.body);
+            await postService.postPost(req.body);
 
             return res.status(200).json({ status: 200 });
         }
@@ -37,10 +37,10 @@ export default class PostsController {
     async deletePostById(req, res,next) {
         console.log("function delete post")
         try {
-            const postService = new ItemService("post");
-            await postService.deleteItem(req.params.id,"id");
-            const commentService = new ItemService("comment");
-            await commentService.deleteItem(req.params.id,"id");
+            const postService = new PostService();
+            await postService.deletePost(req.params.id,"id");
+            const commentService = new PostService("comment");
+            await commentService.deletePost(req.params.id,"id");
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {
@@ -54,8 +54,8 @@ export default class PostsController {
     async updatePostById(req, res) {
         console.log("function update post")
         try {
-            const postService = new ItemService("post");
-            await postService.updateItem(req.body, req.params.id);
+            const postService = new PostService();
+            await postService.updatePost(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

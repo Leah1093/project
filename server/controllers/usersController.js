@@ -1,4 +1,4 @@
-import { ItemService } from '../service/itemsService.js';
+import { UserService } from '../service/userService.js';
 import { sha256 } from 'js-sha256'
 
 export default class UsersController {
@@ -7,13 +7,13 @@ export default class UsersController {
         console.log("function add user")
         try {
             let signedUp = { query: { username: req.body[0].username }, params: { id: null } }
-            const userServicee = new ItemService("user");
-            const resultGetItems = await userServicee.getItems(signedUp);
-            if (resultGetItems.length == 0) {
-                const resultAddUser = await userServicee.postItem(req.body[0]);
-                const resultGetItem = await userServicee.getItems(signedUp);
-                const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.postItem({ id: resultGetItem[0].id, password: sha256(req.body[1].password) });
+            const userServicee = new UserService("user");
+            const resultGetUsers = await userServicee.getUsers(signedUp);
+            if (resultGetUsers.length == 0) {
+                const resultAddUser = await userServicee.postUser(req.body[0]);
+                const resultGetUser = await userServicee.getUsers(signedUp);
+                const userPasswordService = new UserService("userpassword");
+                const resultAddPassword = await userPasswordService.postUser({ id: resultGetUser[0].id, password: sha256(req.body[1].password) });
                 return res.status(200).json({ token:{ token }, status: 200 });
             } else
                 throw new Error("Element already exists")
@@ -39,11 +39,11 @@ export default class UsersController {
     async getUsers(req, res, next) {
         try {
             console.log("function get all users")
-            const userService = new ItemService("user");
-            const resultItems = await userService.getItems(req)
-            if (resultItems.length == 0)
+            const userService = new UserService("user");
+            const resultUsers = await userService.getUsers(req)
+            if (resultUsers.length == 0)
                 throw new Error("No elements found")
-            return res.status(200).json(resultItems);
+            return res.status(200).json(resultUsers);
         }
         catch (ex) {
             const err = {}
@@ -68,13 +68,13 @@ export default class UsersController {
     async editPassword(req, res, next) {
         try {
             let editUser = { query: { username: req.body[0].username }, params: { id: null } }
-            const userServicee = new ItemService("user");
-            const resultGetItems = await userServicee.getItems(editUser);
-            if (resultGetItems.length != 0) {
-                const userPasswordService = new ItemService("userpassword");
-                const resultAddPassword = await userPasswordService.getItems({ query: null, params: { id: resultGetItems[0].id } });
+            const userServicee = new UserService("user");
+            const resultGetUsers = await userServicee.getUsers(editUser);
+            if (resultGetUsers.length != 0) {
+                const userPasswordService = new UserService("userpassword");
+                const resultAddPassword = await userPasswordService.getUsers({ query: null, params: { id: resultGetUsers[0].id } });
                 if (resultAddPassword[0].password == sha256(req.body[0].password)) {
-                    const editPassword = await userPasswordService.updateItem({ password: sha256(req.body[1].password) }, resultGetItems[0].id);
+                    const editPassword = await userPasswordService.updateUser({ password: sha256(req.body[1].password) }, resultGetUsers[0].id);
                     return res.status(200).json({ status: 200 });
                 }
                 else {
@@ -106,16 +106,15 @@ export default class UsersController {
     async deleteUserById(req, res, next) {
         console.log("function delete user")
         try {
-            // let deleteUser = { query: { username: req.query.username }, params: { id: null } }
-            const userServicee = new ItemService("user");
-            const resultGetItems = await userServicee.getItems(req);
-            if (resultGetItems.length != 0) {
-                const todoServicee = new ItemService("todo");
-                const resultdeletTodo = await todoServicee.deleteItem(resultGetItems[0].userId, "userId");
-                const passwordService = new ItemService("userpassword");
-                const resultdeletPassword = await passwordService.deleteItem(resultGetItems[0].id, "id");
-                const userServicee = new ItemService("user");
-                const resultdeletUser = await userServicee.deleteItem(resultGetItems[0].userId, "userId");
+            const userServicee = new UserService("user");
+            const resultGetUsers = await userServicee.getUsers(req);
+            if (resultGetUsers.length != 0) {
+                const todoServicee = new UserService("todo");
+                const resultdeletTodo = await todoServicee.deleteUser(resultGetUsers[0].userId, "userId");
+                const passwordService = new UserService("userpassword");
+                const resultdeletPassword = await passwordService.deleteUser(resultGetUsers[0].id, "id");
+                const userServicee = new UserService("user");
+                const resultdeletUser = await userServicee.deleteUser(resultGetUsers[0].userId, "userId");
             } else {
                 throw new Error("No elements found");
             }
@@ -132,8 +131,8 @@ export default class UsersController {
     async updateUserById(req, res, next) {
         console.log("function update user")
         try {
-            const userService = new ItemService("user");
-            await userService.updateItem(req.body, req.params.id);
+            const userService = new UserService("user");
+            await userService.updateUser(req.body, req.params.id);
             return res.status(200).json({ status: 200, data: req.params.id });
         }
         catch (ex) {

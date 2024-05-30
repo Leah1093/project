@@ -26,22 +26,17 @@ function App() {
       phone: data.phone
     }
   }
- 
 
-  useEffect(() => {
+  useEffect( () => {
     const currntUser = JSON.parse(localStorage.getItem("currentUser"))
-    currntUser && fetch(`http://localhost:8086/user?username=${currntUser.username}`,{
-      headers: {
-        Authorization: currntUser.token.token
-      }
-    
-  })
+    currntUser && fetch(`http://localhost:8080/user?username=${currntUser.username}`, {
+      headers: { Authorization: currntUser.token.token }
+    })
       .then(async response => {
         const data = await response.json();
         response.ok && setCurrentUser(() => user(data[0]))
       })
   }, []);
-
 
   return (
     <>
@@ -59,7 +54,7 @@ function App() {
                 <Route path=":postId/comment" element={<Comments />} />
               </Route>
               <Route path='todo' element={<Todos />} />
-              <Route path='editPassword' element={  <EditPassword />} />
+              <Route path='editPassword' element={<EditPassword />} />
               <Route path='info' element={<Info />} />
             </Route>
             <Route path='/login' element={<Login />} />
